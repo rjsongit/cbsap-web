@@ -1,0 +1,1 @@
+export const SEARCH_ACTIVITY_LOGS = 'v1/activity-logs/paged';
