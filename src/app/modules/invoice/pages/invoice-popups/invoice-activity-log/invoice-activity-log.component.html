@@ -1,4 +1,59 @@
-<p-table [value]="invoiceActivityLogs" sortField="actionName" sortMode="single" dataKey="actionName"
+<p-table 
+    [value]="invoiceActivityLogs2"
+    [paginator]="true"
+    [rows]="10"
+    responsiveLayout="scroll"
+    styleClass="p-datatable-gridlines">
+
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="activityDate">
+              Action Date
+              <p-sortIcon field="activityDate"></p-sortIcon>
+            </th>
+            <th pSortableColumn="activity">
+              Action
+              <p-sortIcon field="activity"></p-sortIcon>
+            </th>
+            <th pSortableColumn="module">
+              Activity Class
+              <p-sortIcon field="module"></p-sortIcon>
+            </th>
+            <th pSortableColumn="oldValue">
+              Previous Value
+              <p-sortIcon field="oldValue"></p-sortIcon>
+            </th>
+            <th pSortableColumn="newValue">
+              New Value
+              <p-sortIcon field="newValue"></p-sortIcon>
+            </th>
+            <th>
+              Reason
+            </th>
+            <th pSortableColumn="actionBy">
+              Actioned By
+              <p-sortIcon field="actionBy"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+
+    <!-- BODY -->
+    <ng-template pTemplate="body" let-row>
+        <tr>
+            <td>{{row.activityDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td>{{row.activity}}</td>
+            <td>{{row.module}}</td>
+            <td>{{row.oldValue}}</td>
+            <td>{{row.newValue}}</td>
+            <td>TBD</td>
+            <td>{{row.actionBy}}</td>
+        </tr>
+    </ng-template>
+
+</p-table>
+
+<!-- <p-table [value]="invoiceActivityLogs" sortField="actionName" sortMode="single" dataKey="actionName"
   rowGroupMode="subheader" groupRowsBy="actionName" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template #header>
     <tr>
@@ -45,4 +100,4 @@
       </td>
     </tr>
   </ng-template>
-</p-table>
+</p-table> -->

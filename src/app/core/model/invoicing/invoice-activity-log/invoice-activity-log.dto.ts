@@ -4,12 +4,21 @@ export interface InvActivityLogDto {
 }
 
 export interface InvActivityLogEntriesDto {
-  activityLogID: number;
+  activityID: number;
   invoiceID: number;
-  previousStatus: string | null;
-  currentStatus: string | null;
-  reason: string | null;
-  action: string | null;
+  activity: string | null;
+  actionBy: string | null;
+  module: string | null;
+  oldValue: string | null;
+  newValue: string | null;
+  tableName: string | null;
+  columnName: string | null;
+  metaDataOld: string | null;
+  metaDataNew: string | null;
+  metaData: string | null;
+  activityDate: Date;
   createdBy: string | null;
-  createdDate: string | null;
+  createdDate: Date;
+  lastUpdatedBy: string | null;
+  lastUpdatedDate: Date | null;
 }

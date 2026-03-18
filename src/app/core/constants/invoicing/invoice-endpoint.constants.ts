@@ -15,6 +15,9 @@ export const INV_ENPOINT = {
   GET_INV_ACTIVITY_LOG: (InvoiceID: number) =>
     `${inv_base_endpoint}/${InvoiceID}/invoiceActivityLog`,
 
+  GET_INV_ACTIVITY_LOG2: (InvoiceID: number) =>
+    `${inv_base_endpoint}/${InvoiceID}/invoiceActivityLog2`,
+
   GET_INV_ALLOCATION_QUERY: `${inv_base_endpoint}/invallocationline/paged?`,
   UPDATE_INVOICE: `${inv_base_endpoint}/update`,
   GET_INV_MYINVOICE_SEARCH: `${inv_base_endpoint}/myInvoiceSearch/paged?`,

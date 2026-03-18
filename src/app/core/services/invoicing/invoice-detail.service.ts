@@ -25,6 +25,7 @@ import {
   ExportRejectedInvoiceQuery,
   GetInvAllocLineQuery,
   InvActivityLogDto,
+  InvActivityLogEntriesDto,
   InvoiceCommentDto,
   LoadInvoiceCommentQuery,
   LoadInvoiceCommentsDto,
@@ -158,14 +159,30 @@ export class InvoiceDetailService {
       );
   }
 
-  
-
   getInvoiceActivityLogByInvID(
     invoiceID: number
   ): Observable<ResponseResult<InvActivityLogDto[]>> {
     return this.resultHttpClient
       .get<InvActivityLogDto[]>(
         INV_ENPOINT.GET_INV_ACTIVITY_LOG(invoiceID),
+        true
+      )
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => error);
+        })
+      );
+  }
+
+  getInvoiceActivityLogByInvID2(
+    invoiceID: number
+  ): Observable<ResponseResult<InvActivityLogEntriesDto[]>> {
+    return this.resultHttpClient
+      .get<InvActivityLogEntriesDto[]>(
+        INV_ENPOINT.GET_INV_ACTIVITY_LOG2(invoiceID),
         true
       )
       .pipe(
