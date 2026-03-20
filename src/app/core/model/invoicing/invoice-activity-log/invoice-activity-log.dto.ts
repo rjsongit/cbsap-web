@@ -16,7 +16,7 @@ export interface InvActivityLogEntriesDto {
   metaDataOld: string | null;
   metaDataNew: string | null;
   metaData: string | null;
-  activityDate: Date;
+  actionDate: Date;
   createdBy: string | null;
   createdDate: Date;
   lastUpdatedBy: string | null;

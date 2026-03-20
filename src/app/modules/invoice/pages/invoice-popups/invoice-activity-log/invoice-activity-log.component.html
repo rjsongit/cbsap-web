@@ -2,15 +2,16 @@
     [value]="invoiceActivityLogs2"
     [paginator]="true"
     [rows]="10"
+    [rowsPerPageOptions]="[10,25,50]"
     responsiveLayout="scroll"
     styleClass="p-datatable-gridlines">
 
     <!-- HEADER -->
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="activityDate">
+            <th pSortableColumn="actionDate">
               Action Date
-              <p-sortIcon field="activityDate"></p-sortIcon>
+              <p-sortIcon field="actionDate"></p-sortIcon>
             </th>
             <th pSortableColumn="activity">
               Action
@@ -41,7 +42,7 @@
     <!-- BODY -->
     <ng-template pTemplate="body" let-row>
         <tr>
-            <td>{{row.activityDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td>{{row.actionDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
             <td>{{row.activity}}</td>
             <td>{{row.module}}</td>
             <td>{{row.oldValue}}</td>
