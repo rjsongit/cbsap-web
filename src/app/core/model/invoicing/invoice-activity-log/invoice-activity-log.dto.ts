@@ -9,7 +9,7 @@ export interface InvActivityLogEntriesDto {
   activity: string | null;
   actionBy: string | null;
   module: string | null;
-  oldValue: string | null;
+  prevValue: string | null;
   newValue: string | null;
   tableName: string | null;
   columnName: string | null;

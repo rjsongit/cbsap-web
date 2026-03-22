@@ -22,9 +22,9 @@
               Activity Class
               <p-sortIcon field="module"></p-sortIcon>
             </th>
-            <th pSortableColumn="oldValue">
+            <th pSortableColumn="prevValue">
               Previous Value
-              <p-sortIcon field="oldValue"></p-sortIcon>
+              <p-sortIcon field="prevValue"></p-sortIcon>
             </th>
             <th pSortableColumn="newValue">
               New Value
@@ -46,7 +46,7 @@
             <td>{{row.actionDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
             <td>{{row.activity}}</td>
             <td>{{row.module}}</td>
-            <td>{{row.oldValue}}</td>
+            <td>{{row.prevValue}}</td>
             <td>{{row.newValue}}</td>
             <td>TBD</td>
             <td>{{row.actionBy}}</td>
