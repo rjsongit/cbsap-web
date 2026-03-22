@@ -3,7 +3,8 @@
     [paginator]="true"
     [rows]="10"
     [rowsPerPageOptions]="[10,25,50]"
-    responsiveLayout="scroll"
+    [scrollable]="true"
+    paginatorDropdownAppendTo="body"
     styleClass="p-datatable-gridlines">
 
     <!-- HEADER -->
@@ -51,8 +52,7 @@
             <td>{{row.actionBy}}</td>
         </tr>
     </ng-template>
-
-</p-table>
+  </p-table>
 
 <!-- <p-table [value]="invoiceActivityLogs" sortField="actionName" sortMode="single" dataKey="actionName"
   rowGroupMode="subheader" groupRowsBy="actionName" [tableStyle]="{ 'min-width': '50rem' }">

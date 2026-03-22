@@ -84,7 +84,7 @@ export class InvoiceActionsComponent {
         icon: 'pi pi-comments',
         command: () => this.onOpenAddComment(),
         visibleIn: [
-          InvoiceQueue.MyInvoices,
+          // InvoiceQueue.MyInvoices,
           InvoiceQueue.ExceptionQueue,
           InvoiceQueue.RejectionQueue,
           InvoiceQueue.ArchiveQueue,
