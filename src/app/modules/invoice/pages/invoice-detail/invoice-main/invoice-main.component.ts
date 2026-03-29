@@ -69,10 +69,11 @@ import { GridConfig } from '@core/model/dynamic-grid/grid.config';
     InvoiceLinesComponent,
     InvoiceRoutingFlowComponent,
     InvoiceActionsComponent,
+
     NgClass,
     NgIf,
-    NgFor
-],
+    NgFor,
+  ],
   templateUrl: './invoice-main.component.html',
   styleUrl: './invoice-main.component.scss',
 })
@@ -121,11 +122,11 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
   isShowComments: boolean = true;
   totalRecords: number = 0;
   pageNumber: number = 0;
-  pageSize: number = 10;
+  pageSize:number = 10;
   loading: boolean = true;
   visible: boolean = false;
   sortField?: string = '';
-  sortOrder: number = 1;
+  sortOrder:number = 1;
   gridConfig: GridConfig<LoadInvoiceCommentsDto> | null = null;
   invoiceComments: LoadInvoiceCommentsDto[] = [];
   submitComment: string = '';
@@ -215,6 +216,7 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.listenToInvoiceChanges();
     this.initializeMain();
     this.initializeDynamicGrid();
+    
   }
 
   onTabSelect(event: any) {
@@ -885,7 +887,7 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
       header: 'Invoice Activity Log',
       modal: true,
       closable: true,
-      width: '800px',
+      width: '70vw',
 
       data: { invoiceID: this.invoiceID },
       style: { minHeight: '200px' },
@@ -1069,7 +1071,8 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  private initializeDynamicGrid() {
+
+private initializeDynamicGrid() {
     const columns = this.gridService.loadInvoiceCommentsColumn();
     this.dynamicGridService.setConfig({
       columns,
@@ -1088,7 +1091,7 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     if (this.isShowComments) this.loadData(1);
   }
-
+ 
   loadData(pageNumber: number) {
     // this.isShowComments = true;
     const query: LoadInvoiceCommentQuery = {
@@ -1098,17 +1101,16 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
       SortField: this.gridConfig?.sortField ?? '',
       SortOrder: this.gridConfig?.sortOrder ?? -1,
     };
-  
     // this.dynamicGridService.setLoading(true);
     this.searchRejectedInvoice2(query);
   }
-
+ 
   onLazyLoad(event: any): void {
     const pageNumber = event.pageNumber;
     const rows = event.pageSize ?? 10;
     const sortField = event.sortField || '';
     const sortOrder = event.sortOrder ?? -1;
-
+ 
     const query: LoadInvoiceCommentQuery = {
       InvoiceID: this.invoiceID,
       PageNumber: pageNumber,
@@ -1119,10 +1121,10 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dynamicGridService.setLoading(true);
     this.searchRejectedInvoice(query);
   }
-
+ 
   searchRejectedInvoice(query: LoadInvoiceCommentQuery) {
     query.InvoiceID = this.invoiceID || 0;
-
+ 
     this.invDetail
       .loadInvoiceComments(query)
       .pipe(takeUntil(this.destroySubject))
@@ -1140,12 +1142,13 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
         error: () => {
           this.dynamicGridService.setLoading(false);
         },
-      });
+      }
+    );
   }
-
+ 
   searchRejectedInvoice2(query: LoadInvoiceCommentQuery) {
     query.InvoiceID = this.invoiceID || 0;
-
+ 
     this.invDetail
       .loadInvoiceComments(query)
       .pipe(takeUntil(this.destroySubject))
@@ -1163,13 +1166,13 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
         },
       });
   }
-
+ 
   onAddComment() {
     if (this.submitComment.trim()) {
       this.addCommentDto.comment = this.submitComment;
       this.addCommentDto.invoiceID = this.invoiceID || 0;
       this.addCommentDto.invoiceCommentID = 0;
-
+ 
       this.invDetail.saveinvoiceComment(this.addCommentDto).subscribe({
         next: (response) => {
           if (response.isSuccess) {

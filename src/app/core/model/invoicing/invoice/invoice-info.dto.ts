@@ -81,6 +81,8 @@ export interface InvoiceDto {
   statusType: InvoiceStatusEnum;
   keywordID: number;
   keyword: string;
+  invRoutingFlowID: number;
+  invRoutingFlowName: string;
   freeFields: FreeFieldDto[];
   spareAmount: SpareAmountDto[];
   invoiceAllocationLines: InvAllocEntryDto[];

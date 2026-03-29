@@ -6,56 +6,65 @@
     [scrollable]="true"
     paginatorDropdownAppendTo="body"
     styleClass="p-datatable-gridlines">
-
+ 
     <!-- HEADER -->
-    <ng-template pTemplate="header">
-        <tr>
-            <th pSortableColumn="actionDate">
-              Action Date
-              <p-sortIcon field="actionDate"></p-sortIcon>
-            </th>
-            <th pSortableColumn="activity">
+<ng-template pTemplate="header">
+<tr>
+<th pSortableColumn="actionDate">
+       Action Date
+<p-sortIcon field="actionDate"></p-sortIcon>
+</th>
+<th pSortableColumn="activity">
               Action
-              <p-sortIcon field="activity"></p-sortIcon>
-            </th>
-            <th pSortableColumn="module">
+<p-sortIcon field="activity"></p-sortIcon>
+</th>
+<th pSortableColumn="table">
+        Table
+<p-sortIcon field="table"></p-sortIcon>
+</th>
+<th pSortableColumn="column">
+        Column
+<p-sortIcon field="column"></p-sortIcon>
+</th>
+<th pSortableColumn="activityClass">
               Activity Class
-              <p-sortIcon field="module"></p-sortIcon>
-            </th>
-            <th pSortableColumn="prevValue">
+<p-sortIcon field="activityClass"></p-sortIcon>
+</th>        
+<th pSortableColumn="preValue">
               Previous Value
-              <p-sortIcon field="prevValue"></p-sortIcon>
-            </th>
-            <th pSortableColumn="newValue">
+<p-sortIcon field="preValue"></p-sortIcon>
+</th>
+<th pSortableColumn="newValue">
               New Value
-              <p-sortIcon field="newValue"></p-sortIcon>
-            </th>
-            <th>
-              Reason
-            </th>
-            <th pSortableColumn="actionBy">
+<p-sortIcon field="newValue"></p-sortIcon>
+</th>        
+<th pSortableColumn="actionedBy">
               Actioned By
-              <p-sortIcon field="actionBy"></p-sortIcon>
-            </th>
-        </tr>
-    </ng-template>
-
+<p-sortIcon field="actionedBy"></p-sortIcon>
+</th>
+</tr>
+</ng-template>
+ 
     <!-- BODY -->
-    <ng-template pTemplate="body" let-row>
-        <tr>
-            <td>{{row.actionDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
-            <td>{{row.activity}}</td>
-            <td>{{row.module}}</td>
-            <td>{{row.prevValue}}</td>
-            <td>{{row.newValue}}</td>
-            <td>TBD</td>
-            <td>{{row.actionBy}}</td>
-        </tr>
-    </ng-template>
-  </p-table>
+<ng-template pTemplate="body" let-row>
+<tr>
+<td>{{row.actionDate | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+<td>{{row.action}}</td>
+<td>{{row.table}}</td>
+<td>{{row.column}}</td>
+<td>{{row.activityClass}}</td>
+<td>{{row.prevValue}}</td>
+<td>{{row.newValue}}</td>
+<td>{{row.ActionedBy}}</td>
+</tr>
+</ng-template>
+ 
+</p-table>
 
-<!-- <p-table [value]="invoiceActivityLogs" sortField="actionName" sortMode="single" dataKey="actionName"
-  rowGroupMode="subheader" groupRowsBy="actionName" [tableStyle]="{ 'min-width': '50rem' }">
+<!--
+  groupRowsBy="actionName"
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
   <ng-template #header>
     <tr>
       <th style="width: 20%">Previous Status</th>
@@ -65,25 +74,41 @@
       <th style="width: 20%">Created Date</th>
     </tr>
   </ng-template>
-  <ng-template #groupheader let-invActivityLogEntries let-rowIndex="rowIndex" let-expanded="expanded">
+  <ng-template
+    #groupheader
+    let-invActivityLogEntries
+    let-rowIndex="rowIndex"
+    let-expanded="expanded"
+  >
     <tr>
       <td colspan="5">
-        <button type="button" pButton pRipple [pRowToggler]="invActivityLogEntries" text rounded plain class="mr-2"
-          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+        <button
+          type="button"
+          pButton
+            pple
+          [pRowToggler]="invActivityLogEntries"
+          text
+          rounded
+          plain
+          class="mr-2"
+          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+        ></button>
 
         <span class="font-bold ml-2">{{
           invActivityLogEntries.actionName
-          }}</span>
+        }}</span>
       </td>
     </tr>
   </ng-template>
 
   <ng-template #expandedrow let-invoiceActivityLogs>
-    <tr *ngFor="
+    <tr
+      *ngFor="
         let activitylog of invoiceActivityLogs.invActivityLogEntries;
         let i = index;
         trackBy: trackByValue
-      ">
+      "
+    >
       <td>
         <span>{{ activitylog.previousStatus }}</span>
       </td>

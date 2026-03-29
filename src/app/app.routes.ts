@@ -144,14 +144,6 @@ export const appRoutes: Routes = [
       ),
   },
   {
-    path: 'reports',
-    component: ContentLayoutComponent,
-    loadChildren: () =>
-      import('@modules/reports/reports.routes').then(
-        (r) => r.REPORTS_ROUTES
-      ),
-  },
-  {
     path: '**',
     redirectTo: '/auth/login',
     pathMatch: 'full',

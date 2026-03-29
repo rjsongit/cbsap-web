@@ -473,6 +473,8 @@ export class GridService {
     ];
   }
 
+
+
   invRoutingFlowGridColumn(
     rolesTemplate: TemplateRef<any>,
     usersTemplate: TemplateRef<any>
@@ -745,6 +747,25 @@ export class GridService {
     ];
   }
 
+  invoiceRoutingSelectTableGrid(): DynamicGridColumn[]{
+      return[{
+          field: 'invRoutingFlowID',
+          header: 'Routing Flow ID',
+          sort: true,
+          isSearchFilter: true
+      },{
+          field: 'invRoutingFlowName',
+          header: 'Routing Flow Name',
+          sort: true,
+          isSearchFilter: true
+      },{
+          field: 'supplierName',
+          header: 'Supplier Name',
+          sort: true,
+          isSearchFilter: true,
+      }]
+  }
+
   supplierSelectTableGrid(): DynamicGridColumn[] {
     return [
       {
@@ -820,6 +841,42 @@ export class GridService {
       },
     ];
   }
+
+GoodReceiptSelectTableGrid(): DynamicGridColumn[] {
+    return [
+      {
+        field: 'goodsReceiptNumber',
+        header: 'Goods Receipt Number',
+        sort: true,
+        isSearchFilter: true
+      },
+      {
+        field: 'supplier',
+        header: 'Supplier Name',
+        sort: true,
+        isSearchFilter: true
+      },
+      {
+        field: 'deliveryDate',
+        header: 'Delivery Date',
+        sort: false,
+        isSearchFilter: true,
+        type: 'date',
+        pipe: 'date',
+        filterType: 'date-range' 
+      },
+      {
+        field: 'active',
+        header: 'Active',
+        sort: true,
+        isSearchFilter: true,
+        type: 'tag',
+        pipe: 'yesno',
+        filterType: 'boolean'
+      }
+    ];
+  }
+
 
   myInvoiceSearchColumn(
     selectInvoiceTemplate: TemplateRef<any>

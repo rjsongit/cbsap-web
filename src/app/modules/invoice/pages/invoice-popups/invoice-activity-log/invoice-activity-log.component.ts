@@ -7,9 +7,9 @@ import {
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 
-import { InvActivityLogDto, InvActivityLogEntriesDto } from '@core/model/invoicing/invoicing.index';
+import { InvActivityLogDto, InvActivityLogEntriesDto} from '@core/model/invoicing/invoicing.index';
 import { PrimeImportsModule } from '@shared/moduleResources/prime-imports';
-import { DatePipe, JsonPipe, NgFor, NgForOf } from '@angular/common';
+import { DatePipe,JsonPipe, NgFor, NgForOf } from '@angular/common';
 import { trackByValue } from '@core/utils/shared-utils';
 
 @Component({
@@ -25,7 +25,7 @@ export class InvoiceActivityLogComponent implements OnInit, OnDestroy {
   trackByValue = trackByValue;
 
   invoiceActivityLogs!: InvActivityLogDto[];
-  invoiceActivityLogs2!: InvActivityLogEntriesDto[];
+  invoiceActivityLogs2!:InvActivityLogEntriesDto[];
 
   /**
    *
@@ -33,15 +33,15 @@ export class InvoiceActivityLogComponent implements OnInit, OnDestroy {
   constructor(
     private invDetail: InvoiceDetailService,
     private config: DynamicDialogConfig)
-  {
+   {
     this.invoiceID = (this.config.data?.invoiceID as number) ?? 0;
   }
-  
   ngOnInit(): void {
-    this.loadInvoiceActivityLog(this.invoiceID);
+   // this.loadInvoiceActivityLog(this.invoiceID);
     this.loadInvoiceActivityLog2(this.invoiceID);
-  }
 
+
+  }
   ngOnDestroy(): void {
     this.destroySubject.next();
     this.destroySubject.complete();
@@ -61,19 +61,35 @@ export class InvoiceActivityLogComponent implements OnInit, OnDestroy {
         error: () => {},
       });
   }
+   
+   loadInvoiceActivityLog2(invoiceID: number) {
 
-  loadInvoiceActivityLog2(invoiceID: number) {
     this.invDetail
       .getInvoiceActivityLogByInvID2(invoiceID)
       .pipe(takeUntil(this.destroySubject))
       .subscribe({
+         
         next: (res) => {
+
           if (res.isSuccess) {
+
             this.invoiceActivityLogs2 = res.responseData!;
             console.log('this.invoiceActivityLogs2', this.invoiceActivityLogs2);
           }
         },
-        error: () => {},
+         error: ()  => {},
+
       });
-  }
+
+      
+
+
+
+   }
+
+
+
+
+
+
 }

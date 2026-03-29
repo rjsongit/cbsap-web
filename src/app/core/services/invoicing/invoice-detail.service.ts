@@ -15,7 +15,7 @@ import { SelectItem } from 'primeng/api';
 import { Observable, catchError, map, shareReplay, throwError } from 'rxjs';
 import { ResultsHttpService } from '../common/results-http.service';
 import { Pagination, ResponseResult } from '@core/model/common';
-import { HttpErrorResponse, INV_ENPOINT } from '@core/constants/index';
+import { GOODS_RECEIPT_SEARCH_LOOKUP, HttpErrorResponse,INV_ENPOINT } from '@core/constants/index';
 import {
   ArchiveSearchQuery,
   ExceptionsSearchQuery,
@@ -40,6 +40,8 @@ import { ExcelService } from '@core/services/util-services/excel.service';
 import { InvValidationResponseDto } from '@core/model/invoicing/invoice-status-change/submit-validation-response.dto';
 import { InvInfoRoutingLevelDto } from '@core/model/invoicing/invoice/invoice-routing-level.dto';
 import { InvoiceQueue, InvoiceStatusEnum } from '@core/enums';
+import { SearchGoodsReceiptQuery } from '@core/model/goods-receipt/search-goods-receipt.query';
+import { SearchGoodsReceiptLookupDto } from '@core/model/goods-receipt/search-goods-receipt.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -159,6 +161,8 @@ export class InvoiceDetailService {
       );
   }
 
+  
+
   getInvoiceActivityLogByInvID(
     invoiceID: number
   ): Observable<ResponseResult<InvActivityLogDto[]>> {
@@ -180,21 +184,33 @@ export class InvoiceDetailService {
   getInvoiceActivityLogByInvID2(
     invoiceID: number
   ): Observable<ResponseResult<InvActivityLogEntriesDto[]>> {
-    return this.resultHttpClient
-      .get<InvActivityLogEntriesDto[]>(
-        INV_ENPOINT.GET_INV_ACTIVITY_LOG2(invoiceID),
-        true
-      )
-      .pipe(
-        map((response) => {
-          return response;
-        }),
+
+        return this.resultHttpClient
+        .get<InvActivityLogEntriesDto[]>(
+
+          INV_ENPOINT.Get_INV_ACTIVITY_LOG2(invoiceID),
+          true
+        )
+
+        .pipe(
+
+          map((response) => {
+
+            return response;
+
+          }),
+
         catchError((error: HttpErrorResponse) => {
           return throwError(() => error);
+
         })
-      );
+
+        );
+        
+
   }
   
+
   getInvoiceStatus(
     invoiceID: number
   ): Observable<ResponseResult<GetInvoiceStatusDto>> {
@@ -630,5 +646,30 @@ export class InvoiceDetailService {
           return throwError(() => error);
         })
       );
+
+
   }
+
+goodReceiptNoSearch(
+        query: SearchGoodsReceiptQuery
+      ): Observable<ResponseResult<Pagination<SearchGoodsReceiptLookupDto>>> {
+        return this.resultHttpClient
+          .getSearchWithPagination<SearchGoodsReceiptLookupDto>(
+            `${GOODS_RECEIPT_SEARCH_LOOKUP}?${this.resultHttpClient.serialiazeQueryString(
+              query
+            )}`,
+            true
+          )
+          .pipe(
+            map((response) => {
+              return response;
+            }),
+            catchError((error: HttpErrorResponse) => {
+              return throwError(() => error);
+            })
+          );
+
+}
+
+
 }

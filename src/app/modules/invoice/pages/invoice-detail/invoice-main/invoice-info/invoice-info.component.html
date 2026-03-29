@@ -22,7 +22,7 @@
                 <input id="suppName" type="text" pInputText formControlName="suppName" size="small" class="w-full" />
                 <p-inputgroup-addon>
                   <p-button variant="text" severity="secondary" icon="pi pi-search" size="small"
-                    (click)="assignSupplier()" />
+                    (click)="assignSupplier()"/>
                 </p-inputgroup-addon>
               </p-inputgroup>
               <div class="mt-1 flex justify-between items-center text-xs text-gray-500">
@@ -114,7 +114,14 @@
         <div class="grid grid-cols-12 items-center gap-2">
           <label for="grNo" class="col-span-12 md:col-span-4 font-medium">Good Receipt No</label>
           <div class="col-span-12 md:col-span-8">
-            <input id="grNo" type="text" pInputText formControlName="grNo"  class="w-full" />
+            <p-inputgroup>
+              <input id="grNo" type="text" pInputText formControlName="grNo"  class="w-full" />
+            <p-inputgroup-addon>
+            <p-button variant="text" severity="secondary" icon="pi pi-search" size="small"
+            (click)="assignGoodReceiptNo()"></p-button>
+            </p-inputgroup-addon>
+            </p-inputgroup>
+            
           </div>
         </div>
       </div>
@@ -250,11 +257,20 @@
     </ng-template>
     <div class="p-4">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-2">         
-          <div class="grid grid-cols-12 items-center gap-2">
+        <div class="grid grid-cols-12 items-center gap-2">
           <label class="col-span-12 md:col-span-4 font-medium">Routing Flow Name</label>
-          <div class="col-span-12 md:col-span-8">
+          <!--<div class="col-span-12 md:col-span-8">
             <input type="text" disabled  pInputText  class="w-full" [value]="routingFlowName" />
-          </div>
+          </div>-->
+            <div class="col-span-12 md:col-span-8">
+              <p-inputgroup>
+                <input id="invRoutingFlowName" type="text" pInputText formControlName="invRoutingFlowName" class="w-full" />
+                <p-inputgroup-addon>
+                  <p-button variant="text" severity="secondary" icon="pi pi-search" size="small"
+                    (click)="assignRoutingFlow()" [disabled]="disableBrowseBtn()"></p-button>
+                </p-inputgroup-addon>
+              </p-inputgroup>
+            </div>
         </div>
           <div class="grid grid-cols-12 items-center gap-2">
           <label class="col-span-12 md:col-span-4 font-medium">Next Role</label>
@@ -271,7 +287,7 @@
                 <input id="keyword" type="text" pInputText formControlName="keyword" class="w-full" />
                 <p-inputgroup-addon>
                   <p-button variant="text" severity="secondary" icon="pi pi-search" size="small"
-                    (click)="assignKeyword()"></p-button>
+                    (click)="assignKeyword()" [disabled]="disableBrowseBtn()"></p-button>
                 </p-inputgroup-addon>
               </p-inputgroup>
             </div>
@@ -313,17 +329,7 @@
       </div>       
     </div>
   </p-panel>
-
-  <p-panel header="Free Fields" [toggleable]="true" styleClass="mb-2 panel-items" *ngIf="false">
-    <div class="mt-2 mb-2 flex flex-col gap-4">
-      <div class="flex items-center pt-2 gap-3">
-        <span class="font-bold"> Add Free Fields</span>
-        <button type="button" pButton class="rounded-full p-button-outlined p-button-sm" pTooltip="Add Free Fields"
-          (click)="onAddFreeField()" [disabled]="formFreeFields.length >= 3">
-          <i class="pi pi-plus"></i>
-        </button>
-
-      </div>
+  
       <!-- Render each free field in a horizontal row -->
       <div formArrayName="freeFields">
         <div *ngFor="let field of formFreeFields.controls; let i = index" class="flex items-center gap-4"
@@ -346,8 +352,8 @@
         </div>
 
       </div>
-    </div>
-  </p-panel>
+    
+   
   <p-panel header="Spare Amount" [toggleable]="true" styleClass="mb-2 panel-items" *ngIf="false">
     <div class="mt-2  mb-2 flex flex-col gap-4">
       <div class="flex items-center pt-2 gap-3">
