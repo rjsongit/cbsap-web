@@ -21,7 +21,7 @@ import { FileUpload } from 'primeng/fileupload';
 })
 export class InvoiceAttachmentComponent implements OnInit {
   @ViewChild('fu') fileUpload!: FileUpload;
-  attachments?: InvAttachmentDto[] = [];
+  attachments!: InvAttachmentDto[];
 
   uploadUrl = this.attachmentService.getUploadUrl();
   invoiceID: number = 0;
@@ -98,9 +98,11 @@ export class InvoiceAttachmentComponent implements OnInit {
     this.attachmentService.getAttachments(this.invoiceID).subscribe({
       next: (response) => {
         if (response.isSuccess) {
-          this.attachments = response?.responseData?.map((data) => {
-            return data;
-          });
+          // this.attachments = response?.responseData?.map((data) => {
+          //   return data;
+          // });
+
+          this.attachments = response.responseData!;
         }
       },
       error: (error: ResponseResult<InvAttachmentDto[]>) => {

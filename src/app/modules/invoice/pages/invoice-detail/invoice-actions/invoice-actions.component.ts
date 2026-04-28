@@ -43,8 +43,13 @@ export class InvoiceActionsComponent {
     return this._statusQueue;
   }
 
+  @Input() set attachmentCount(value: number | null) {
+    this._attachmentCount = value ?? 0;
+  }
+
   private _currentQueue!: InvoiceQueue | null;
   private _statusQueue!: InvoiceStatusEnum | null;
+  private _attachmentCount!: number;
 
   constructor(private formService: InvoiceFormService) {}
 
@@ -106,13 +111,6 @@ export class InvoiceActionsComponent {
         action: InvoiceActionButton.ActivityLog,
         items: [
           {
-            label: 'Add Attachments',
-            icon: 'pi pi-paperclip',
-            command: () => this.onOpenInvAttachment(),
-            visibleIn: [InvoiceQueue.MyInvoices, InvoiceQueue.ExceptionQueue],
-            action: InvoiceActionButton.AddAttachments,
-          },
-          {
             label: 'Invoice Activity Log',
             icon: 'pi pi-bolt',
             command: () => this.onOpenInvoiceActivityLog(),
@@ -157,6 +155,14 @@ export class InvoiceActionsComponent {
         ],
         action: InvoiceActionButton.Cancel,
       },
+      {
+        label: 'Add Attachments',
+        icon: 'pi pi-paperclip',
+        command: () => this.onOpenInvAttachment(),
+        visibleIn: [InvoiceQueue.MyInvoices, InvoiceQueue.ExceptionQueue],
+        action: InvoiceActionButton.AddAttachments,
+        badge: this._attachmentCount > 0 ? String(this._attachmentCount) : '0',
+      }
     ];
 
     const filterVisibleItems = (items: any[]): MenuItem[] =>

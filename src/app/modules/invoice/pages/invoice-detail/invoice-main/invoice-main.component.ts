@@ -13,6 +13,7 @@ import { ResponseResult } from '@core/model/common';
 import { InvAllocEntryDto } from '@core/model/invoicing/invoice/invoice-allocation-lines.dto';
 import {
   AmountDto,
+  InvAttachmentDto,
   InvInfoDto,
   InvValidationResponseDto,
   InvoiceCommentDto,
@@ -25,6 +26,7 @@ import {
   AuthService,
   CustomConfirmDialogService,
   GridService,
+  InvoiceAttachmentService,
   InvoiceDetailService,
   InvoiceFormService,
   LoaderService,
@@ -86,6 +88,7 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(InvoiceLinesComponent) invLinesComp!: InvoiceLinesComponent;
   @ViewChild('invroutingFlowComp')
   invroutingFlowComp!: InvoiceRoutingFlowComponent;
+  attachments!: InvAttachmentDto[];
   
   invoiceID: number = 0;
   keywordID:number | null = 0;
@@ -170,7 +173,8 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
     private poLinesSharedService: PoLinesSharedService,
     private invFormService:InvoiceFormService,
     private gridService: GridService,
-    private dynamicGridService: DynamicGridService<LoadInvoiceCommentsDto>
+    private dynamicGridService: DynamicGridService<LoadInvoiceCommentsDto>,
+    private attachmentService: InvoiceAttachmentService,
   ) {
     this.invoiceID = Number(this.activeRoute.snapshot.params['id'] ?? 0);
   }
@@ -216,7 +220,29 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.listenToInvoiceChanges();
     this.initializeMain();
     this.initializeDynamicGrid();
-    
+    this.getAttachments();
+  }
+
+  getAttachments() {
+    this.attachmentService.getAttachments(this.invoiceID).subscribe({
+      next: (response) => {
+        if (response.isSuccess) {
+          // this.attachments = response?.responseData?.map((data) => {
+          //   return data;
+          // });
+
+          this.attachments = response.responseData!;
+        }
+      },
+      error: (error: ResponseResult<InvAttachmentDto[]>) => {
+        // this.message.showToast(
+        //   MessageSeverity.error.toString(),
+        //   'Error on Adding Comment',
+        //   error.messages?.[0],
+        //   2000
+        // );
+      },
+    });
   }
 
   onTabSelect(event: any) {
