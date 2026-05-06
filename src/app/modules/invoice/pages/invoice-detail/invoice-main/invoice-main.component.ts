@@ -590,6 +590,9 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
       this.formService.openInvAttachmentDialog$.subscribe(() => {
         this.AddAttachment();
       });
+    // Refresh attachments immediately when an attachment is added/removed
+    this.formService.attachmentChanged$.pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.getAttachments());
     this.openInvoiceActivityLogDialogSub =
       this.formService.openInvActivityLog$.subscribe(() => {
         this.OpenInvoiceActivityLog();
@@ -919,6 +922,7 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
       dismissableMask: true,
       baseZIndex: 1200,
     });
+    // attachments are refreshed via `attachmentChanged$` from the attachment component
   }
   OpenInvoiceActivityLog() {
     const ref = this.dialogService.open(InvoiceActivityLogComponent, {

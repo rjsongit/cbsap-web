@@ -45,6 +45,7 @@ export class InvoiceActionsComponent {
 
   @Input() set attachmentCount(value: number | null) {
     this._attachmentCount = value ?? 0;
+    this.buildMenuItems(); // Rebuild menu so badge updates when count changes
   }
 
   private _currentQueue!: InvoiceQueue | null;

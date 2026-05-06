@@ -33,6 +33,9 @@ export class InvoiceFormService {
   private poDialogCloseSubject = new Subject<void>();
   closePODialog$ = this.poDialogCloseSubject.asObservable();
 
+  private attachmentChangedSubject = new Subject<void>();
+  attachmentChanged$ = this.attachmentChangedSubject.asObservable();
+
   constructor() {}
 
   triggerSave() {
@@ -63,5 +66,9 @@ export class InvoiceFormService {
 
   triggerClosePODialog() {
     this.poDialogCloseSubject.next();
+  }
+
+  triggerAttachmentChanged() {
+    this.attachmentChangedSubject.next();
   }
 }
