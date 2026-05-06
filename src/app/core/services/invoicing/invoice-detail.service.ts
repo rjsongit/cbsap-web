@@ -671,5 +671,17 @@ goodReceiptNoSearch(
 
 }
 
+deleteInvoiceComment(comment: LoadInvoiceCommentsDto): Observable<ResponseResult<boolean>> {
+    return this.resultHttpClient
+      .post<boolean>(`${INV_ENPOINT.DELETE_COMMENT}`, comment, true)
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => error);
+        })
+      );
+  }
 
 }

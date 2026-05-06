@@ -38,6 +38,7 @@ export const INV_ENPOINT = {
   FOR_HOLD: `${inv_base_endpoint}/forhold`,
   ADD_COMMENTS: `${inv_base_endpoint}/addinvoicecomment`,
   UPLOAD_ATTACHMENT: `${inv_base_endpoint}/upload`,
+  DELETE_COMMENT: `${inv_base_endpoint}/deleteinvoicecomment`,
   DOWNLOAD_ATTACHMENT: (InvoiceAttachnmentID: number) =>
     `${inv_base_endpoint}/${InvoiceAttachnmentID}/downloadattachment`,
   GETALL_ATTACHMENT: (InvoiceID: number) =>

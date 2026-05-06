@@ -1,5 +1,6 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Menu } from 'primeng/menu';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageSeverity } from '@core/constants';
@@ -30,6 +31,7 @@ import {
   InvoiceDetailService,
   InvoiceFormService,
   LoaderService,
+  LocalStorageService,
 } from '@core/services';
 
 import {
@@ -88,6 +90,7 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(InvoiceLinesComponent) invLinesComp!: InvoiceLinesComponent;
   @ViewChild('invroutingFlowComp')
   invroutingFlowComp!: InvoiceRoutingFlowComponent;
+  @ViewChild('commentMenu') commentMenu!: Menu;
   attachments!: InvAttachmentDto[];
   
   invoiceID: number = 0;
@@ -139,6 +142,13 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
     invoiceID: 0
   };
 
+  // comment menu / edit state
+  selectedCommentIndex: number | null = null;
+  editingIndex: number | null = null;
+  editCommentText: string = '';
+  commentMenuItems: any[] = [];
+  username: string = this.localStorage.get('username') ?? 'Unknown User';
+
   private destroySubject: Subject<void> = new Subject();
   private sub = new Subscription();
   private openCommentDialogSub = new Subscription();
@@ -175,6 +185,7 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
     private gridService: GridService,
     private dynamicGridService: DynamicGridService<LoadInvoiceCommentsDto>,
     private attachmentService: InvoiceAttachmentService,
+    private localStorage: LocalStorageService
   ) {
     this.invoiceID = Number(this.activeRoute.snapshot.params['id'] ?? 0);
   }
@@ -221,6 +232,7 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initializeMain();
     this.initializeDynamicGrid();
     this.getAttachments();
+    // console.log(this.localStorage.get('username'));
   }
 
   getAttachments() {
@@ -949,6 +961,120 @@ export class InvoiceMainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dialogService.getInstance(ref).maximize();
   }
 
+  openCommentMenu(event: any, index: number) {
+    this.selectedCommentIndex = index;
+    this.commentMenuItems = [
+      // {
+      //   label: 'Edit',
+      //   icon: 'pi pi-pencil',
+      //   command: () => {
+      //     this.startEditComment(index);
+      //   },
+      // },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        command: () => {
+          this.confirmDeleteComment(index);
+        },
+      },
+    ];
+
+    try {
+      this.commentMenu.toggle(event);
+    } catch {
+      // ignore
+    }
+  }
+
+  startEditComment(index: number | null) {
+    if (index === null || index === undefined) return;
+    this.editingIndex = index;
+    this.editCommentText = this.invoiceComments[index]?.comment ?? '';
+  }
+
+  cancelEdit() {
+    this.editingIndex = null;
+    this.editCommentText = '';
+  }
+
+  saveEditedComment() {
+    if (this.editingIndex === null) return;
+    const idx = this.editingIndex;
+    const existing = this.invoiceComments[idx];
+    const payload: InvoiceCommentDto = {
+      invoiceCommentID: existing.invoiceCommentID,
+      invoiceID: this.invoiceID || 0,
+      comment: this.editCommentText,
+    };
+
+    this.invDetail.saveinvoiceComment(payload).subscribe({
+      next: (res) => {
+        if (res.isSuccess) {
+          this.message.showToast(
+            MessageSeverity.success.toString(),
+            'Comment Edited',
+            'Comment updated',
+            2000
+          );
+        }
+      },
+      error: (err) => {
+        this.message.showToast(
+          MessageSeverity.error.toString(),
+          'Edit Comment',
+          err.messages?.[0],
+          2000
+        );
+      },
+      complete: () => {
+        this.editingIndex = null;
+        this.editCommentText = '';
+        this.loadData(1);
+      },
+    });
+  }
+
+  confirmDeleteComment(index: number | null) {
+    if (index === null) return;
+    this.customConfirmService.confirm({
+      message: 'Are you sure you want to delete this comment?',
+      header: 'Delete Comment',
+      accept: () => this.deleteComment(index),
+      reject: () => {},
+    });
+  }
+
+  deleteComment(index: number) {
+    if (index >= 0 && index < this.invoiceComments.length) {
+      this.invDetail.deleteInvoiceComment(this.invoiceComments[index]).subscribe({
+        next: (response) => {
+          if (response.isSuccess) {
+            this.message.showToast(
+              MessageSeverity.success.toString(),
+              'Comment Deleted',
+              'Successfully deleted.',
+              2000
+            );
+          }
+        },
+        error: (error: ResponseResult<boolean>) => {
+          this.message.showToast(
+            MessageSeverity.error.toString(),
+            'Error on Deleting Comment',
+            error.messages?.[0],
+            2000
+          );
+        },
+        complete: () => {
+          this.loadData(1);
+        },
+      });
+      
+      
+    }
+  }
+
   OpenInvoiceValidation(messages: string[], title: string, action: string) {
     const ref = this.dialogService.open(InvoiceValidationResponseComponent, {
       header: title,
@@ -1183,8 +1309,8 @@ private initializeDynamicGrid() {
           if (res.isSuccess) {
             this.totalRecords = res.responseData?.totalCount ?? 0;
             this.invoiceComments = res.responseData?.data ?? [];
-            console.log('Total Records:', this.totalRecords);
-            console.log('Total ResponseData:', this.invoiceComments);
+            // console.log('Total Records:', this.totalRecords);
+            // console.log('Total ResponseData:', this.invoiceComments);
           }
         },
         error: () => {
