@@ -45,7 +45,7 @@
     <!-- BODY -->
     <ng-template pTemplate="body" let-row>
       <tr>
-        <td>{{row.originalFileName}}</td>
+        <td>{{row.originalFileName}} → <span class="text-blue-600 font-bold" style="cursor: pointer;" (click)="download(row.invoiceAttachnmentID)">{{ row.storageFileName }}</span></td>
         <td style="width: 10rem">{{row.uploadedBy}}</td>
         <td style="width: 10rem">{{row.createdDate | date:'dd/MM/yyyy HH:mm:ss'}}</td>
       </tr>
