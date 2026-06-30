@@ -26,11 +26,27 @@ export interface RoleDto {
   roleEntities: RoleEntitiyDto[] | null;
   rolePermissions: RolePermissionDto[] | null;
   roleUsers: RoleUserDto[] | null;
+  roleDimensions: RoleDimensionDto[] | null;
+  entityOptions: DropdownOptionDto[] | null;
+  categoryOptions: DropdownOptionDto[] | null;
 }
 
 export interface RolePermissionDto {
   permissionID: number;
   permissionName: string;
+}
+
+export interface RoleDimensionDto {
+  EntityProfileID: number;
+  Entity: string;
+  Category: string;
+  DimensionID: number;
+  Assigned: string;
+}
+
+export interface DropdownOptionDto {
+  label: string;
+  value: number;
 }
 
 export interface RoleEntitiyDto {
