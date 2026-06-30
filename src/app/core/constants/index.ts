@@ -26,3 +26,4 @@ export * from './lookups/lookups.constants';
 
 export * from './invoicing/invoice-endpoint.constants'
 export * from './keyword-management/keyword-management-constants'
+export * from './coding-permission/coding-permission-constants'

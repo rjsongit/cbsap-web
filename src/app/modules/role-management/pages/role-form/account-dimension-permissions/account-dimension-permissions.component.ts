@@ -3,7 +3,7 @@ import { FormGroup, FormsModule, ReactiveFormsModule, FormControl } from '@angul
 import { AccountDimensionDetailDTO } from '@core/model/account-dimension-permission/dtos/AccountDimensionDetailDTO';
 import { DropdownOptionDto, RoleEntitiyDto } from '@core/model/roles-management';
 import { PrimeImportsModule } from '@shared/moduleResources/prime-imports';
-// import { RoleAccountDimensionPopupComponent } from '@shared/popup/role-account-dimension-popup/role-account-dimension-popup.component';
+import { CodingPermissionPopupComponent } from '@shared/popup/coding-permission-popup/coding-permission-popup.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
@@ -57,22 +57,22 @@ export class AccountDimensionPermissionsComponent
     return item.entityProfileID;
   }
 
-  addAccountDimension(): void {
-    // const ref: DynamicDialogRef = this.dialogService.open(RoleAccountDimensionPopupComponent, {
-    //   header: 'Select Coding Permission',
-    //   width: '45vw',
-    //   modal: true,
-    //   closable: true,
-    //   contentStyle: { 'overflow-y': 'hidden' },
-    //   baseZIndex: 10000,
-    //   data: { message: 'Hello from parent' } // Passing data in
-    // });
+  openCodingPermission(): void {
+    const ref: DynamicDialogRef = this.dialogService.open(CodingPermissionPopupComponent, {
+      header: 'Select Coding Permission',
+      width: '45vw',
+      modal: true,
+      closable: true,
+      contentStyle: { 'overflow-y': 'hidden' },
+      baseZIndex: 10000,
+      data: { message: 'Hello from parent' } // passing data to popup
+    });
   
-    // ref.onClose.subscribe((data: any) => {
-    //   if (data) {
-    //     console.log('Returned data:', data);
-    //   }
-    // });
+    ref.onClose.subscribe((data: any) => {
+      if (data) {
+        console.log('Returned data:', data);
+      }
+    });
   }
 
   private autoAssignEntity(): void {
