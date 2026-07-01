@@ -51,14 +51,14 @@
         <div class="field flex gap-4">
             <label for="{{ filterbyAssigned }}" >Assigned</label>
             <div class="flex text-right">
-                <p-toggle-switch [(ngModel)]="filterbyAssigned" (ngModelChange)="onToggleFilterChange()"/>
+                <p-toggle-switch [(ngModel)]="filterbyAssigned" (ngModelChange)="onToggleChange()"/>
             </div>
         </div>
 
         <div class="field flex gap-4">
             <label for="{{ filterbyUnassigned }}" >Unassigned</label>
             <div class="flex text-right">
-                <p-toggle-switch [(ngModel)]="filterbyUnassigned" (ngModelChange)="onToggleFilterChange()"/>
+                <p-toggle-switch [(ngModel)]="filterbyUnassigned" (ngModelChange)="onToggleChange()"/>
             </div>
         </div>
     </div>
@@ -76,16 +76,16 @@
         
         <!-- Multi-Column Selection Layout List -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-60 overflow-y-auto p-1">
-            @if (filteredLabels.length > 0) {
-                @for (labelItem of filteredLabels; track labelItem.id) {
+            @if (permissionFiltered.length > 0) {
+                @for (item of permissionFiltered; track item.ID) {
                     <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors duration-150 border-b border-gray-100 last:border-0">
-                        <label [for]="'lbl-' + labelItem.id" class="cursor-pointer text-sm font-medium text-gray-700 select-none pr-2">
-                            {{ labelItem.code }}-{{ labelItem.name }}
+                        <label [for]="'lbl-' + item.ID" class="cursor-pointer text-sm font-medium text-gray-700 select-none pr-2">
+                            {{ item.nameCode }}
                         </label>
                         <p-checkbox 
-                            [(ngModel)]="labelItem.checked" 
+                            [(ngModel)]="item.checked" 
                             [binary]="true" 
-                            [inputId]="'lbl-' + labelItem.id" />
+                            [inputId]="'lbl-' + item.ID" />
                     </div>
                 }
             } @else {

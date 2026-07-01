@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { HttpService } from '../common/http.service';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ResponseResult } from '@core/model/common';
-import { CodingPermissionCategoryDTO } from '@core/model/account-dimension-permission/dtos/CodingPermissionCategoryDTO';
-import { CODING_PERMISSION, CODING_PERMISSION_CATEGORIES, HttpErrorResponse } from '@core/constants';
+import { CodingPermissionCategoryDTO, CodingPermissionDTO, CodingPermissionEntityDTO } from '@core/model/account-dimension-permission';
+import { CODING_PERMISSION, CODING_PERMISSION_CATEGORIES, CODING_PERMISSION_ENTITIES, HttpErrorResponse } from '@core/constants';
 import { ResultsHttpService } from '../common/results-http.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -32,10 +32,24 @@ export class CodingPermissionService {
         );
     }
 
-  getCodingPermissionsByEntityAndCategory(entityProfileID: number, categoryID: number):
-    Observable<ResponseResult<CodingPermissionCategoryDTO[]>> {
+  getCodingPermissionEntitiesByRole(roleID: number):
+    Observable<ResponseResult<CodingPermissionEntityDTO[]>> {
       return this.resultHttpClient
-        .get<CodingPermissionCategoryDTO[]>(`${CODING_PERMISSION}/${entityProfileID}/${categoryID}`, true)
+        .get<CodingPermissionEntityDTO[]>(`${CODING_PERMISSION_ENTITIES}/role/${roleID}`, true)
+        .pipe(
+          map((response) => {
+            return response;
+          }),
+          catchError((error: HttpErrorResponse) => {
+            return throwError(() => error);
+          })
+        );
+    }
+
+  getCodingPermissionsByEntityAndCategory(entityProfileID: number, categoryName: string | undefined):
+    Observable<ResponseResult<CodingPermissionDTO[]>> {
+      return this.resultHttpClient
+        .get<CodingPermissionDTO[]>(`${CODING_PERMISSION}/entity/${entityProfileID}/category/${categoryName}`, true)
         .pipe(
           map((response) => {
             return response;
