@@ -58,11 +58,9 @@ export class CodingPermissionPopupComponent
 
   ngOnInit(): void {
     // access data passed from the parent
-    console.log('RoleID:', this.roleId);
     this.receivedData = this.config.data.message;
     this.getEntityByRole();
     this.getCategoryByEntity();
-    this.loadPermissionList();
   }
 
   onError(error: any) {
@@ -94,6 +92,8 @@ export class CodingPermissionPopupComponent
             this.entityList = result.responseData ?? [];
             this.selectedEntity = this.entityList.length > 0 ? this.entityList[0].entityProfileID : 0;
           }
+
+          this.loadPermissionList();
         },
         error: (error) => this.onError(error),
     });
