@@ -1,9 +1,10 @@
 export interface CodingPermissionDTO {
-    ID: number,
+    id: number,
     entityProfileID: number,
+    category: string,
     nameCode: string,
     name: string,
     code: string,
-    originallyAssigned: boolean; // Tracking the baseline initial database footprint
+    originallyAssigned: boolean;
     checked: boolean;
 }

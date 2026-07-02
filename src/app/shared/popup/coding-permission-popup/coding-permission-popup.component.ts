@@ -13,16 +13,6 @@ import { CodingPermissionService } from '@core/services';
 import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
-interface PermissionLabel {
-  id: number;
-  name: string;
-  code: string;
-  entityProfileID: number;
-  categoryID: number;
-  originallyAssigned: boolean; // Tracking the baseline initial database footprint
-  checked: boolean;            // The active state editable by checking/unchecking
-}
-
 @Component({
   selector: 'app-coding-permission-popup',
   standalone: true,
@@ -42,10 +32,9 @@ export class CodingPermissionPopupComponent
   categoryList: CodingPermissionCategoryDTO[] = [];
   selectedEntity: number = 11;
   selectedCategory: number = 1;
-  private destroySubject: Subject<void> = new Subject();
-
   permissionFiltered: CodingPermissionDTO[] = [];
   permissionList: CodingPermissionDTO[] = [];
+  private destroySubject: Subject<void> = new Subject();
 
   constructor(
     private ref: DynamicDialogRef,
@@ -88,7 +77,6 @@ export class CodingPermissionPopupComponent
       .subscribe({
         next: (result) => {
           if (result.isSuccess) {
-            console.log(result.responseData);
             this.entityList = result.responseData ?? [];
             this.selectedEntity = this.entityList.length > 0 ? this.entityList[0].entityProfileID : 0;
           }
@@ -119,7 +107,6 @@ export class CodingPermissionPopupComponent
       .subscribe({
         next: (result) => {
           if (result.isSuccess) {
-            console.log(result.responseData);
             this.permissionList = result.responseData ?? [];
             this.permissionFiltered = [...this.permissionList]; // Initialize filtered list with all permissions
           }

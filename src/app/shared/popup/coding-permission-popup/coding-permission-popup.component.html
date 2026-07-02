@@ -77,15 +77,15 @@
         <!-- Multi-Column Selection Layout List -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-60 overflow-y-auto p-1">
             @if (permissionFiltered.length > 0) {
-                @for (item of permissionFiltered; track item.ID) {
+                @for (item of permissionFiltered; track item.id) {
                     <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors duration-150 border-b border-gray-100 last:border-0">
-                        <label [for]="'lbl-' + item.ID" class="cursor-pointer text-sm font-medium text-gray-700 select-none pr-2">
+                        <label [for]="'lbl-' + item.id" class="cursor-pointer text-sm font-medium text-gray-700 select-none pr-2">
                             {{ item.nameCode }}
                         </label>
                         <p-checkbox 
                             [(ngModel)]="item.checked" 
                             [binary]="true" 
-                            [inputId]="'lbl-' + item.ID" />
+                            [inputId]="'lbl-' + item.id" />
                     </div>
                 }
             } @else {
