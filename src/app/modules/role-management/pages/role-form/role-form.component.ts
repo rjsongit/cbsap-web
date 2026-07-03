@@ -130,12 +130,7 @@ export class RoleFormComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (results: ResponseResult<RoleDto>) => {
           if (results.isSuccess || results.responseData) {
-            const role = results.responseData ?? {} as RoleDto;
-
-            this.entityOptions = role.entityOptions ?? [];
-            this.categoryOptions = role.categoryOptions ?? [];
-
-            this.patchFormValues(role);
+            this.patchFormValues(results.responseData ?? {} as RoleDto);
           }
         },
         error: (error) => this.onError(error),
