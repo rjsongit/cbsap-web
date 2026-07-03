@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { CodingPermissionDTO, CodingPermissionEntityDTO, GetRoleAccountDimensionQuery } from '@core/model/account-dimension-permission';
 import { EntitySearchDto } from '@core/model/system-settings/entity/entity-searchDto';
@@ -16,7 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-coding-permission-popup',
   standalone: true,
-  imports: [ButtonModule, FormsModule, ToggleSwitchModule, SelectModule, CheckboxModule, InputTextModule],
+  imports: [ReactiveFormsModule, ButtonModule, FormsModule, ToggleSwitchModule, SelectModule, CheckboxModule, InputTextModule],
   templateUrl: './coding-permission-popup.component.html',
   styleUrl: './coding-permission-popup.component.scss'
 })
@@ -48,6 +48,8 @@ export class CodingPermissionPopupComponent
   ngOnInit(): void {
     // access data passed from the parent
     this.receivedData = this.config.data.message;
+    this.selectedEntity = this.config.data.selectedEntity;
+    this.selectedCategory = this.config.data.selectedCategory;
     this.getEntityByRole();
     this.getCategoryByEntity();
   }
@@ -67,7 +69,11 @@ export class CodingPermissionPopupComponent
   }
 
   saveAndClose() {
-    this.ref.close(this.permissionList);
+    this.ref.close({
+      codingPermissions: this.permissionList,
+      selectedEntity: this.selectedEntity,
+      selectedCategory: this.selectedCategory
+    });
   }
 
   getEntityByRole() {
@@ -78,23 +84,23 @@ export class CodingPermissionPopupComponent
         next: (result) => {
           if (result.isSuccess) {
             this.entityList = result.responseData ?? [];
-            this.selectedEntity = this.entityList.length > 0 ? this.entityList[0].entityProfileID : 0;
+            this.loadPermissionList();
           }
-
-          this.loadPermissionList();
         },
         error: (error) => this.onError(error),
     });
   }
 
   getCategoryByEntity() {
-    // this includes [account] & [dimenstion] tables
     this.categoryList = [
-      { categoryID: 1, entityProfileID: 1, categoryName: 'Account', categoryCode: 'EXP' },
-      { categoryID: 2, entityProfileID: 2, categoryName: 'Dimension1', categoryCode: 'TRV' },
-      { categoryID: 3, entityProfileID: 3, categoryName: 'Dimension2', categoryCode: 'ENT' },
-      { categoryID: 4, entityProfileID: 4, categoryName: 'Dimension3', categoryCode: 'TAX' },
-      { categoryID: 5, entityProfileID: 5, categoryName: 'Dimension4', categoryCode: 'UBR' },
+      { categoryID: 1, entityProfileID: 1, categoryName: 'Account', categoryCode: 'Acc' },
+      { categoryID: 2, entityProfileID: 2, categoryName: 'Dimension1', categoryCode: 'Dim1' },
+      { categoryID: 3, entityProfileID: 3, categoryName: 'Dimension2', categoryCode: 'Dim2' },
+      { categoryID: 4, entityProfileID: 4, categoryName: 'Dimension3', categoryCode: 'Dim3' },
+      { categoryID: 5, entityProfileID: 5, categoryName: 'Dimension4', categoryCode: 'Dim4' },
+      { categoryID: 6, entityProfileID: 6, categoryName: 'Dimension5', categoryCode: 'Dim5' },
+      { categoryID: 7, entityProfileID: 7, categoryName: 'Dimension6', categoryCode: 'Dim6' },
+      { categoryID: 8, entityProfileID: 8, categoryName: 'Dimension7', categoryCode: 'Dim7' },
     ];
   }
 

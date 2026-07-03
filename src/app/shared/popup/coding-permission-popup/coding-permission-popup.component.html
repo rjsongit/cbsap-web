@@ -71,10 +71,9 @@
 </div>
 
 <!-- selection list -->
-<!-- Content Workspace Container Box -->
     <div class="border border-gray-300 rounded-md p-4 min-h-[250px] flex flex-col justify-between bg-white">
         
-        <!-- Multi-Column Selection Layout List -->
+        <!-- multi-Column Selection Layout List -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-60 overflow-y-auto p-1">
             @if (permissionFiltered.length > 0) {
                 @for (item of permissionFiltered; track item.id) {
