@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AccountDimensionDetailDTO } from '@core/model/account-dimension-permission/dtos/AccountDimensionDetailDTO';
-import { CodingPermissionCategoryDTO } from '@core/model/account-dimension-permission/dtos/CodingPermissionCategoryDTO';
-import { CodingPermissionDTO } from '@core/model/account-dimension-permission/dtos/CodingPermissionDTO';
-import { CodingPermissionEntityDTO } from '@core/model/account-dimension-permission/dtos/CodingPermissionEntityDTO';
-import { CodingPermissionPopupData } from '@core/model/account-dimension-permission/dtos/CodingPermissionPopupData';
+import { AccountDimensionDetailDTO
+  , CodingPermissionCategoryDTO
+  , CodingPermissionDTO
+  , CodingPermissionEntityDTO
+  , CodingPermissionPopupData } from '@core/model/account-dimension-permission';
 import { DropdownOptionDto } from '@core/model/roles-management';
 import { CodingPermissionService } from '@core/services/coding-permission/coding-permission.service';
 import { PrimeImportsModule } from '@shared/moduleResources/prime-imports';
