@@ -3,23 +3,41 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
             <label for="entity" class="block font-bold mb-2">Entity</label>
-            <p-select 
-                [options]="entityList" 
-                [(ngModel)]="selectedEntity" 
-                optionLabel="entityName" 
-                optionValue="entityProfileID"
-                placeholder="Select an entity" 
-                class="w-full md:w-56" />
+            @if (entityList.length === 1) {
+                <input 
+                    type="text" 
+                    value="{{this.entityList[0].entityName}}" 
+                    class="border rounded p-2" 
+                    readonly />
+            }
+            @else {
+                <p-select 
+                    [options]="entityList" 
+                    [(ngModel)]="selectedEntity" 
+                    optionLabel="entityName" 
+                    optionValue="entityProfileID"
+                    placeholder="Select an entity" 
+                    class="w-full md:w-56" />
+            }
         </div>
         <div>
             <label for="category" class="block font-bold mb-2">Category</label>
-            <p-select 
-                [options]="categoryList"
-                [(ngModel)]="selectedCategory" 
-                optionLabel="categoryName"
-                optionValue="categoryID"
-                placeholder="Select a category" 
-                class="w-full md:w-56" />
+            @if (categoryList.length === 1) {
+                <input 
+                    type="text" 
+                    value="{{this.categoryList[0].categoryName}}" 
+                    class="border rounded p-2" 
+                    readonly />
+            }
+            @else {
+                <p-select 
+                    [options]="categoryList"
+                    [(ngModel)]="selectedCategory" 
+                    optionLabel="categoryName"
+                    optionValue="categoryID"
+                    placeholder="Select a category" 
+                    class="w-full md:w-56" />
+            }
         </div>
         <div>
             <label for="nameCode" class="block font-bold mb-2">Name/Code</label>

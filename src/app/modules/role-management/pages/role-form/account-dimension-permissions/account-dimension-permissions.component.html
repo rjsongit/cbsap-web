@@ -25,23 +25,41 @@
     <!-- Table Row -->
     <div class="table-row">
       <div class="col-entity">
-        <p-select 
-            [options]="entityList" 
+        @if (entityList.length === 1) {
+          <input 
+            type="text" 
+            value="{{this.entityList[0].entityName}}" 
+            class="border rounded p-2" 
+            readonly />
+        }
+        @else {
+          <p-select 
+            [options]="entityList"
             [(ngModel)]="selectedEntity"
             optionLabel="entityName" 
             optionValue="entityProfileID"
             appendTo="body"
             (onChange)="onChangeEntity($event)" />
+        }
       </div>
 
       <div class="col-category">
-        <p-select 
+        @if (categoryList.length === 1) {
+          <input 
+            type="text" 
+            value="{{this.categoryList[0].categoryName}}" 
+            class="border rounded p-2" 
+            readonly />
+        }
+        @else {
+          <p-select 
             [options]="categoryList" 
             [(ngModel)]="selectedCategory"
             optionLabel="categoryName" 
             optionValue="categoryID"
             appendTo="body"
             (onChange)="onChangeCategory($event)" />
+        }
       </div>
 
       <div class="col-assigned">
