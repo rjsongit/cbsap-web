@@ -55,9 +55,7 @@ export class CodingPermissionPopupComponent
     // access data passed from the parent
     this.receivedData = this.config.data.message;
     this.selectedEntity = this.config.data.selectedEntity;
-    this.selectedCategory = this.config.data.selectedCategory;
     this.getEntityByRole();
-    this.getCategoryByEntity();
   }
 
   onError(error: any) {
@@ -91,24 +89,27 @@ export class CodingPermissionPopupComponent
         next: (result) => {
           if (result.isSuccess) {
             this.entityList = result.responseData ?? [];
-            this.loadPermissionList();
+            this.getCategories();
           }
         },
         error: (error) => this.onError(error),
     });
   }
 
-  getCategoryByEntity() {
-    this.categoryList = [
-      { categoryID: 1, entityProfileID: 1, categoryName: 'Account', categoryCode: 'Acc' },
-      { categoryID: 2, entityProfileID: 2, categoryName: 'Dimension1', categoryCode: 'Dim1' },
-      { categoryID: 3, entityProfileID: 3, categoryName: 'Dimension2', categoryCode: 'Dim2' },
-      { categoryID: 4, entityProfileID: 4, categoryName: 'Dimension3', categoryCode: 'Dim3' },
-      { categoryID: 5, entityProfileID: 5, categoryName: 'Dimension4', categoryCode: 'Dim4' },
-      { categoryID: 6, entityProfileID: 6, categoryName: 'Dimension5', categoryCode: 'Dim5' },
-      { categoryID: 7, entityProfileID: 7, categoryName: 'Dimension6', categoryCode: 'Dim6' },
-      { categoryID: 8, entityProfileID: 8, categoryName: 'Dimension7', categoryCode: 'Dim7' },
-    ];
+  getCategories() {
+    this.codingPermissionService
+      .getCodingPermissionCategories()
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe({
+        next: (result) => {
+          if (result.isSuccess) {
+            this.categoryList = result.responseData ?? [];
+            this.selectedCategory = this.config.data.selectedCategory;
+            this.loadPermissionList();
+          }
+        },
+        error: (error) => this.onError(error),
+    });
   }
 
   loadPermissionList() {

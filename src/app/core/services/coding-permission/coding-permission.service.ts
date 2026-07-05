@@ -6,7 +6,6 @@ import { CodingPermissionCategoryDTO, CodingPermissionDTO, CodingPermissionEntit
 import { CODING_PERMISSION, CODING_PERMISSION_ASSIGN, CODING_PERMISSION_ASSIGNED, CODING_PERMISSION_CATEGORIES, CODING_PERMISSION_ENTITIES, HttpErrorResponse } from '@core/constants';
 import { ResultsHttpService } from '../common/results-http.service';
 import { HttpClient } from '@angular/common/http';
-import { CodingPermissionAssignedDTO } from '@core/model/account-dimension-permission/dtos/CodingPermissionAssignedDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +18,10 @@ export class CodingPermissionService {
     private resultHttpClient: ResultsHttpService
   ) { }
 
-  getCodingPermissionCategories(entityProfileID: number)
+  getCodingPermissionCategories()
     : Observable<ResponseResult<CodingPermissionCategoryDTO[]>> {
         return this.resultHttpClient
-          .get<CodingPermissionCategoryDTO[]>(`${CODING_PERMISSION_CATEGORIES}/${entityProfileID}`, true)
+          .get<CodingPermissionCategoryDTO[]>(`${CODING_PERMISSION_CATEGORIES}`, true)
           .pipe(
             map((response) => {
               return response;
