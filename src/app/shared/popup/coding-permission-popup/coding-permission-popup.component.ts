@@ -3,8 +3,7 @@ import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
-import { CodingPermissionDTO, CodingPermissionEntityDTO, GetRoleAccountDimensionQuery } from '@core/model/account-dimension-permission';
-import { EntitySearchDto } from '@core/model/system-settings/entity/entity-searchDto';
+import { CodingPermissionDTO, CodingPermissionEntityDTO, CodingPermissionFilterDTO} from '@core/model/account-dimension-permission';
 import { SelectModule } from 'primeng/select';
 import { CodingPermissionCategoryDTO } from '@core/model/account-dimension-permission/dtos/CodingPermissionCategoryDTO';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -34,6 +33,13 @@ export class CodingPermissionPopupComponent
   selectedCategory: number = 1;
   permissionFiltered: CodingPermissionDTO[] = [];
   permissionList: CodingPermissionDTO[] = [];
+  filterParam: CodingPermissionFilterDTO = {
+    entityProfileID: 0,
+    category: undefined,
+    nameCode: '',
+    isAssigned: false,
+    isUnassigned: false
+  };
   private destroySubject: Subject<void> = new Subject();
 
   constructor(
@@ -74,6 +80,7 @@ export class CodingPermissionPopupComponent
       selectedEntity: this.selectedEntity,
       selectedCategory: this.selectedCategory
     });
+    // alert(this.filterbyNameCode)
   }
 
   getEntityByRole() {
@@ -105,14 +112,21 @@ export class CodingPermissionPopupComponent
   }
 
   loadPermissionList() {
-    const categoryName = this.categoryList.find(cat => cat.categoryID === this.selectedCategory)?.categoryName;
+    this.filterParam = {
+      entityProfileID: this.selectedEntity,
+      category: this.categoryList.find(cat => cat.categoryID === this.selectedCategory)?.categoryName,
+      nameCode: this.filterbyNameCode.trim(),
+      isAssigned: this.filterbyAssigned,
+      isUnassigned: this.filterbyUnassigned
+    };
 
     this.codingPermissionService
-      .getCodingPermissionsByEntityAndCategory(this.selectedEntity, categoryName)
+      .getCodingPermissionsByEntityCategoryAndNameCode(this.filterParam)
       .pipe(takeUntil(this.destroySubject))
       .subscribe({
         next: (result) => {
           if (result.isSuccess) {
+            console.log('Fetched coding permissions:', result.responseData);
             this.permissionList = result.responseData ?? [];
             this.permissionFiltered = [...this.permissionList]; // Initialize filtered list with all permissions
           }
@@ -126,7 +140,7 @@ export class CodingPermissionPopupComponent
   }
 
   onToggleChange()  {
-    this.filterList();
+    this.loadPermissionList();
   }
   
   setAllSelectionStates(stateValue: boolean) {
