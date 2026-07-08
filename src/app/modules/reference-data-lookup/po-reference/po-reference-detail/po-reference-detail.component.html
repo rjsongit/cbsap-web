@@ -1,0 +1,109 @@
+<div class="po-buttons grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+  <div class="flex items-center justify-end gap-4 p-4">
+
+  </div>
+
+  <div class="flex items-center justify-end gap-4 p-4">
+    <p-button (click)="onClickPrevious()" icon="pi pi-chevron-left text-xl" />
+    <p-button (click)="onClickNext()" icon="pi pi-chevron-right text-xl" />
+    <p-button (click)="onClickCancel()" label="Cancel" icon="pi pi-times" severity="secondary" />
+
+  </div>
+
+</div>
+<p-breadcrumb [model]="headerBreadCrums"></p-breadcrumb>
+
+<form [formGroup]="formGroupData">
+
+  <div class="card flex flex-col gap-6 p-6">
+
+    <div class="grid grid-cols-12  gap-4 flex-container">
+      <div class="flex-item">
+        <div class="grid grid-cols-12 items-center gap-2">
+          <label class="col-span-12 font-bold font-bold gap-1 gap-1">Entity</label>
+          <span class="col-span-12 w-full">{{ this.formGroupData.value.Entity }}</span>
+        </div>
+      </div>
+      <div class="flex-item">
+        <div class="grid grid-cols-12 items-center gap-2">
+          <label class="col-span-12 font-bold font-bold gap-1">Supplier</label>
+          <span class="col-span-12 w-full">{{ this.formGroupData.value.SupplierName }}</span>
+        </div>
+      </div>
+      <div class="flex-item">
+        <div class="grid grid-cols-12 items-center gap-2">
+          <label class="col-span-12 font-bold font-bold gap-1">Supplier Id</label>
+          <span class="col-span-12 w-full">{{ this.formGroupData.value.SupplierNo }}</span>
+        </div>
+      </div>
+      <div class="flex-item">
+        <div class="grid grid-cols-12 items-center gap-2">
+          <label class="col-span-12 font-bold font-bold gap-1">Order Date</label>
+          <span class="col-span-12 w-full">{{ this.formGroupData.value.PurchaseDate }}</span>
+        </div>
+      </div>
+      <div class="flex-item">
+        <div class="grid grid-cols-12 items-center gap-2">
+          <label class=" col-span-12 font-bold font-bold gap-1">Currency</label>
+          <span class="col-span-12 w-full">{{ this.formGroupData.value.Currency }}</span> <!--Total Amount of PO-->
+        </div>
+      </div>
+      <div class="flex-item">
+        <div class="grid grid-cols-12 items-center gap-2">
+          <label class="col-span-12 font-bold font-bold gap-1">Order Amount</label>
+          <span class="col-span-12 w-full">{{ this.formGroupData.value.PurchaseOrderAmount }}</span>
+        </div>
+      </div>
+      <div class="flex-item">
+        <div class="grid grid-cols-12 items-center gap-2">
+          <label class=" col-span-12 font-bold font-bold gap-1">Good Received Amount</label>
+          <span class="col-span-12 w-full">{{ this.formGroupData.value.SumGoodReceivedAmount }}</span>
+        </div>
+      </div>
+      <div class="flex-item">
+        <div class="grid grid-cols-12 items-center gap-2">
+          <label class=" col-span-12 font-bold font-bold gap-1">Invoice Amount</label>
+          <span class="col-span-12 w-full">{{ this.formGroupData.value.SumInvoiceAmount }}</span>
+        </div>
+      </div>
+      <div class="flex-item">
+        <div class="grid grid-cols-12 items-center gap-2">
+          <label class=" col-span-12 font-bold font-bold gap-1">Outstand Amount</label>
+          <span class="col-span-12 w-full">{{ this.formGroupData.value.OutstandingAmount }}</span>
+        </div>
+      </div>
+      <div class="flex-item">
+        <div class="grid grid-cols-12 items-center gap-2">
+          <label class=" col-span-12 font-bold font-bold gap-1">Match Status</label>
+          <span class="col-span-12 w-full">{{ this.formGroupData.value.MatchStatus }}</span>
+        </div>
+      </div>
+    </div>
+    <p-fieldset legend="Purchase Order Line">
+
+      <p-inputgroup class="search-info-line" >
+        <p-inputgroup-addon>
+          <p-button variant="text" severity="secondary" icon="pi pi-search" (click)="onSearchClick(inp.value)"  size="small"/>
+        </p-inputgroup-addon>
+        <input id="searchPoLine" type="text" pInputText size="small" #inp (keyup.enter)="onSearchClick(inp.value)"  />
+        <p-inputgroup-addon>
+          <p-button variant="text" severity="secondary" icon="pi pi-download" label="Export" (click)="onExportToExcel()"   size="small"/>
+        </p-inputgroup-addon>
+      </p-inputgroup>
+
+      <div class="card user-card mt-6">
+        <app-dynamic-grid (load)="onLazyLoad($event)" [config]="gridConfig" [tableStyle]="{ 'width': '90vw' }">
+        </app-dynamic-grid>
+      </div>
+
+      <ng-template #linkTemplate let-row>
+        <span class="link-type-style"
+          (click)="onRowClick(row.invoiceId)"
+        >
+        {{row.invoiceNo}}
+      </span>
+      </ng-template>
+
+    </p-fieldset>
+  </div>
+</form>
