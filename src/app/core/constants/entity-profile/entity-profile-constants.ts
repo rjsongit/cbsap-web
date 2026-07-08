@@ -1,1 +1,0 @@
-export const ENTITYPROFILE ='v1/entityprofile';
