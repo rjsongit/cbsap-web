@@ -23,21 +23,17 @@ import {
 } from '@core/model/roles-management';
 import { ConfirmationService } from 'primeng/api';
 import { MessageSeverity } from '@core/constants';
-import {
-  AlertService,
-  RoleService,
-  AuthService,
-  CustomConfirmDialogService,
-} from '@core/services';
+import { AlertService, RoleService, AuthService, CustomConfirmDialogService } from '@core/services';
 import { Permission, PermissionValues } from '@core/model/auth/permission';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseResult } from '@core/model/common';
 
+
 @Component({
   selector: 'app-role-form',
   standalone: true,
-  providers:  [AlertService],
+  providers: [ AlertService],
   imports: [
     PrimeImportsModule,
     FormsModule,
@@ -118,9 +114,8 @@ export class RoleFormComponent implements OnInit, OnDestroy {
       rolePermissions: this.fb.group({
         selectedPermissions: [[]],
       }),
-        roleDimensions: this.fb.group({
+      roleDimensions: this.fb.group({
           selectedAccountDimensions: [[]],
-
       }),
       userRoles: this.fb.group({
         selectedUsers: [[]],
@@ -135,7 +130,7 @@ export class RoleFormComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (results: ResponseResult<RoleDto>) => {
           if (results.isSuccess || results.responseData) {
-           this.patchFormValues(results.responseData ?? {} as RoleDto);
+            this.patchFormValues(results.responseData ?? {} as RoleDto);
           }
         },
         error: (error) => this.onError(error),
@@ -162,7 +157,6 @@ export class RoleFormComponent implements OnInit, OnDestroy {
         forwardToLevel2Manager: data.reminderNotification?.forwardToLevel2Manager,
         isNewInvoiceReceiveNotification: data.reminderNotification?.isNewInvoiceReceiveNotification ?? false,
       },
-
       roleEntities: {
         selectedEntities: data.roleEntities || [],
       },
@@ -172,10 +166,9 @@ export class RoleFormComponent implements OnInit, OnDestroy {
       userRoles: {
         selectedUsers: data.roleUsers ?? [],
       },
-
       roleDimensions: {
         selectedAccountDimensions: data.roleDimensions ?? [],
-      },
+      }
     });
   }
 
@@ -379,8 +372,7 @@ cancel() {
     return this.roleDetailForm.get('roleDimensions') as FormGroup;
   }
 
-  hasManagePermission(): boolean {
-
+  hasManagePermission():boolean{
     return this.authService.userHasPermission(Permission.CanManageRole);
   }   
 }

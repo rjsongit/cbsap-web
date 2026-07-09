@@ -1,5 +1,3 @@
-import { Dropdown } from "primeng/dropdown";
-
 export interface RoleSearchDTO {
   roleID: number;
   entity: string;
@@ -76,4 +74,3 @@ export interface RoleSearchModel {
   roleName: string;
   isActive: boolean | null;
 }
-

@@ -11,5 +11,4 @@ export interface CreateRoleCommand {
   rolePermissionGroups: number[];
   userRoles: number[];
   roleEntities: number[];
-
 }

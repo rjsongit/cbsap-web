@@ -1,5 +1,4 @@
-
-//dtos
+// dtos
 export * from './dtos/AccountDimensionDetailDTO';
 export * from './dtos/AccountDimensionSearchDTO';
 export * from './dtos/AccountDimensionSearchByIdDTO';
@@ -9,6 +8,6 @@ export * from './dtos/CodingPermissionEntityDTO';
 export * from './dtos/CodingPermissionAssignedDTO';
 export * from './dtos/CodingPermissionPopupData';
 export * from './dtos/CodingPermissionFilterDTO';
-//queries
-export * from './queries/pagination-account-dimension-query';
 
+// queries
+export * from './queries/pagination-account-dimension-query';

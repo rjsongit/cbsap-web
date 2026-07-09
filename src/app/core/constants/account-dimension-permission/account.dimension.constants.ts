@@ -1,1 +1,0 @@
-export const ACCOUNT_DIMENSION ='v1/accountdimension/account-dimensions';

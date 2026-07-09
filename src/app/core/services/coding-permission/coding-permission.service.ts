@@ -7,7 +7,6 @@ import { CODING_PERMISSION, CODING_PERMISSION_ASSIGN, CODING_PERMISSION_ASSIGNED
 import { ResultsHttpService } from '../common/results-http.service';
 import { HttpClient } from '@angular/common/http';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -21,17 +20,17 @@ export class CodingPermissionService {
 
   getCodingPermissionCategories()
     : Observable<ResponseResult<CodingPermissionCategoryDTO[]>> {
-    return this.resultHttpClient
-      .get<CodingPermissionCategoryDTO[]>(`${CODING_PERMISSION_CATEGORIES}`, true)
-      .pipe(
-        map((response) => {
-          return response;
-        }),
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => error);
-        })
-      );
-  }
+        return this.resultHttpClient
+          .get<CodingPermissionCategoryDTO[]>(`${CODING_PERMISSION_CATEGORIES}`, true)
+          .pipe(
+            map((response) => {
+              return response;
+            }),
+            catchError((error: HttpErrorResponse) => {
+              return throwError(() => error);
+            })
+          );
+      }
 
   getCodingPermissionEntitiesByRole(roleID: number)
     : Observable<ResponseResult<CodingPermissionEntityDTO[]>> {
@@ -48,8 +47,7 @@ export class CodingPermissionService {
       }
 
   getCodingPermissionsByEntityAndCategory(entityProfileID: number, categoryName: string | undefined)
-
-   : Observable<ResponseResult<CodingPermissionDTO[]>> {
+    : Observable<ResponseResult<CodingPermissionDTO[]>> {
         return this.resultHttpClient
           .get<CodingPermissionDTO[]>(`${CODING_PERMISSION}/entity/${entityProfileID}/category/${categoryName}`, true)
           .pipe(
@@ -61,7 +59,6 @@ export class CodingPermissionService {
             })
           );
       }
-
 
   saveCodingPermission(codingPermissionDTO: CodingPermissionDTO[])
     : Observable<ResponseResult<string>> {
@@ -79,29 +76,29 @@ export class CodingPermissionService {
 
   getCodingPermissionAssigned(entityProfileID: number, categoryName: string | undefined)
     : Observable<ResponseResult<CodingPermissionDTO[]>> {
-    return this.resultHttpClient
-      .get<CodingPermissionDTO[]>(`${CODING_PERMISSION_ASSIGNED}/entity/${entityProfileID}/category/${categoryName}`, true)
-      .pipe(
-        map((response) => {
-          return response;
-        }),
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => error);
-        })
-      );
-  }
+        return this.resultHttpClient
+          .get<CodingPermissionDTO[]>(`${CODING_PERMISSION_ASSIGNED}/entity/${entityProfileID}/category/${categoryName}`, true)
+          .pipe(
+            map((response) => {
+              return response;
+            }),
+            catchError((error: HttpErrorResponse) => {
+              return throwError(() => error);
+            })
+          );
+      }
 
   getCodingPermissionsByEntityCategoryAndNameCode(codingPermissionFilterDTO: CodingPermissionFilterDTO)
     : Observable<ResponseResult<CodingPermissionDTO[]>> {
-    return this.resultHttpClient
-      .post<CodingPermissionDTO[]>(`${CODING_PERMISSION}/filter`, codingPermissionFilterDTO, true)
-      .pipe(
-        map((response) => {
-          return response;
-        }),
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => error);
-        })
-      );
-  }
+        return this.resultHttpClient
+          .post<CodingPermissionDTO[]>(`${CODING_PERMISSION}/filter`, codingPermissionFilterDTO, true)
+          .pipe(
+            map((response) => {
+              return response;
+            }),
+            catchError((error: HttpErrorResponse) => {
+              return throwError(() => error);
+            })
+          );
+      }
 }

@@ -14,8 +14,6 @@ export * from './role-management/role-management.constants';
 
 export * from './permission-managment/permission.constants';
 
-export * from './account-dimension-permission/account.dimension.constants';
-
 //Common Function 
 export * from './common/statusFilterOptions';
 
@@ -28,4 +26,4 @@ export * from './lookups/lookups.constants';
 
 export * from './invoicing/invoice-endpoint.constants'
 export * from './keyword-management/keyword-management-constants'
-export * from  './coding-permission/coding-permission-constants'
+export * from './coding-permission/coding-permission-constants'

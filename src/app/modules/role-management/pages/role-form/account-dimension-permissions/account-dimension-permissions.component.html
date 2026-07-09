@@ -2,10 +2,16 @@
   <!-- Open coding -->
   <div class="flex items-center pt-3 gap-3 mt-3">
     <span class="font-bold">Coding Permissions</span>
-    <p-button type="button" icon="pi pi-plus" [rounded]="true" class="rounded-full p-button-outlined p-button-sm"
-      pTooltip="Assign Coding Permissions" (click)="openCodingPermission()">
+    <p-button
+      type="button"
+      icon="pi pi-plus"
+      [rounded]="true"
+      class="rounded-full p-button-outlined p-button-sm"
+      pTooltip="Assign Coding Permsissions"
+      (click)="openCodingPermission()">
     </p-button>
   </div>
+
   <!-- Filter Section -->
   <div class="minimal-table-container mt-3">
 
@@ -19,32 +25,58 @@
     <!-- Table Row -->
     <div class="table-row">
       <div class="col-entity">
-        <p-select [options]="entityList" [(ngModel)]="selectedEntity" optionLabel="entityName"
-          optionValue="entityProfileID" appendTo="body" (onChange)="onChangeEntity($event)" />
+        @if (entityList.length === 1) {
+          <input 
+            type="text" 
+            value="{{this.entityList[0].entityName}}" 
+            class="border rounded p-2" 
+            readonly />
+        }
+        @else {
+          <p-select 
+            [options]="entityList"
+            [(ngModel)]="selectedEntity"
+            optionLabel="entityName" 
+            optionValue="entityProfileID"
+            appendTo="body"
+            (onChange)="onChangeEntity($event)" />
+        }
       </div>
 
       <div class="col-category">
-        <p-select [options]="categoryList" [(ngModel)]="selectedCategory" optionLabel="categoryName"
-          optionValue="categoryID" appendTo="body" 
-          
-          (onChange)="onChangeCategory($event)" />
+        @if (categoryList.length === 1) {
+          <input 
+            type="text" 
+            value="{{this.categoryList[0].categoryName}}" 
+            class="border rounded p-2" 
+            readonly />
+        }
+        @else {
+          <p-select 
+            [options]="categoryList" 
+            [(ngModel)]="selectedCategory"
+            optionLabel="categoryName" 
+            optionValue="categoryID"
+            appendTo="body"
+            (onChange)="onChangeCategory($event)" />
+        }
       </div>
 
       <div class="col-assigned">
         @if (assignedList.length > 0) {
-        @for (item of assignedList; track item.id) {
-        <div class="col-12 md:col-6 lg:col-4">
-          <div class="flex align-items-center p-3 surface-card border-round shadow-1">
-            <!-- <i class="pi pi-user text-2xl mr-3 text-blue-500"></i> -->
-            <div>
-              <div class="text-900">{{ item.nameCode }}</div>
-              <!-- <div class="text-600 text-sm">Software Engineer</div> -->
+          @for (item of assignedList; track item.id) {
+            <div class="col-12 md:col-6 lg:col-4">
+              <div class="flex align-items-center p-3 surface-card border-round shadow-1">
+                <!-- <i class="pi pi-user text-2xl mr-3 text-blue-500"></i> -->
+                <div>
+                  <div class="text-900">{{ item.nameCode }}</div>
+                  <!-- <div class="text-600 text-sm">Software Engineer</div> -->
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        }
+          }
         }
       </div>
     </div>
   </div>
-  </div>
+</div>

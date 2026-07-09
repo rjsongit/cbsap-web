@@ -48,14 +48,14 @@
           <app-role-permissions [formGroup]="rolePermissionsGroup"></app-role-permissions>
         </p-tabpanel>
         <p-tabpanel value="4">
-          <app-account-dimension-permissions
-          [formGroup]="roleDimensionsGroup"
-          [roleId]="roleId"
-          [entityOptions]="entityOptions"
-          [categoryOptions]="categoryOptions">
-        </app-account-dimension-permissions>
+           <app-account-dimension-permissions
+            [formGroup]="roleDimensionsGroup"
+            [roleId]="roleId"
+            [entityOptions]="entityOptions"
+            [categoryOptions]="categoryOptions">
+          </app-account-dimension-permissions>
         </p-tabpanel>
-      <p-tabpanel value="5">
+        <p-tabpanel value="5">
           <app-role-users [formGroup]="userRolesGroup"></app-role-users>
         </p-tabpanel>
       </p-tabpanels>
@@ -64,3 +64,4 @@
     </div>
    
   </div>
+</form>

@@ -3,5 +3,5 @@ export interface AccountDimensionSearchByIdDTO {
     entity: string;
     category: string;
     dimensionID: number;
-    Assigned: string;
+    assigned: string;
 }

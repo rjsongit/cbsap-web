@@ -3,5 +3,4 @@ export interface CodingPermissionCategoryDTO {
     categoryName: string,
     categoryCode: string,
     entityProfileID?: number,
-    
 }

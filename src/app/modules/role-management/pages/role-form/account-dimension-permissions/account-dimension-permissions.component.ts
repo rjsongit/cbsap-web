@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ENTITYPROFILE } from '@core/constants';
-import { AccountDimensionDetailDTO 
+import { AccountDimensionDetailDTO
   , CodingPermissionCategoryDTO
   , CodingPermissionDTO
   , CodingPermissionEntityDTO
@@ -9,14 +8,12 @@ import { AccountDimensionDetailDTO
 import { DropdownOptionDto } from '@core/model/roles-management';
 import { CodingPermissionService } from '@core/services/coding-permission/coding-permission.service';
 import { PrimeImportsModule } from '@shared/moduleResources/prime-imports';
-// import { RoleAccountDimensionPopupComponent } from '@shared/popup/role-account-dimension-popup/role-account-dimension-popup.component';
 import { CodingPermissionPopupComponent } from '@shared/popup/coding-permission-popup/coding-permission-popup.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
-import { BehaviorSubject, from, Subject, takeUntil } from 'rxjs';
-
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-account-dimension-permissions',
@@ -26,20 +23,20 @@ import { BehaviorSubject, from, Subject, takeUntil } from 'rxjs';
   templateUrl: './account-dimension-permissions.component.html',
   styleUrl: './account-dimension-permissions.component.scss'
 })
-export class AccountDimensionPermissionsComponent
-  implements OnInit, OnDestroy {
+export class AccountDimensionPermissionsComponent 
+  implements OnInit, OnDestroy 
+{
   @Input() formGroup!: FormGroup;
   @Input() formSubmitted!: boolean;
-
   @Input() roleId = 0;
   @Input() entityOptions: DropdownOptionDto[] = [];
   @Input() categoryOptions: DropdownOptionDto[] = [];
 
   private destroySubject = new Subject<void>();
-  private dataList$ = new BehaviorSubject<AccountDimensionDetailDTO[]>([]);
+  private dataList$ = new BehaviorSubject<AccountDimensionDetailDTO[]>([]); 
   private totalRecord$ = new BehaviorSubject<number>(0);
-
-  totalRecords = 0;
+ 
+  totalRecords = 0; 
   accountDimensionPagination: AccountDimensionDetailDTO[] = [];
   assignedList: CodingPermissionDTO[] = [];
   toBeAssignedList: CodingPermissionDTO[] = [];
@@ -47,12 +44,11 @@ export class AccountDimensionPermissionsComponent
   categoryList: CodingPermissionCategoryDTO[] = [];
   selectedEntity: number = 0;
   selectedCategory: number = 1;
-  
+
   constructor(
     private dialogService: DialogService,
     private codingPermissionService: CodingPermissionService
-  ) { }
-
+  ) {}
 
   ngOnInit(): void {
     this.getCategoryList();
@@ -77,16 +73,6 @@ export class AccountDimensionPermissionsComponent
     return item.entityProfileID;
   }
 
-  // addAccountDimension(): void {
-  // const ref: DynamicDialogRef = this.dialogService.open(RoleAccountDimensionPopupComponent, {
-  //   header: 'Select Coding Permission',
-  //   width: '45vw',
-  //   modal: true,
-  //   closable: true,
-  //   contentStyle: { 'overflow-y': 'hidden' },
-  //   baseZIndex: 10000,
-  //   data: { message: 'Hello from parent' } // Passing data in
-  // });
   openCodingPermission(): void {
     const ref: DynamicDialogRef = this.dialogService.open(CodingPermissionPopupComponent, {
       header: 'Select Coding Permission',
@@ -95,29 +81,22 @@ export class AccountDimensionPermissionsComponent
       closable: true,
       contentStyle: { 'overflow-y': 'hidden' },
       baseZIndex: 10000,
-      data: {
+      data: { 
         message: 'Hello from parent',
         selectedEntity: this.selectedEntity,
         selectedCategory: this.selectedCategory,
       } // passing data to popup
     });
-
-    // ref.onClose.subscribe((data: any) => {
-    //   if (data) {
-    //     console.log('Returned data:', data);
-    //   }
-    // });
+  
     ref.onClose.subscribe((data: CodingPermissionPopupData) => {
       if (data) {
         // passing the returned data to the parent component
-        // e.g. [toBeAssignedList] = [permissionList] (with filter)
         this.toBeAssignedList = data.codingPermissions.filter(item => item.originallyAssigned !== item.checked);
         this.selectedEntity = data.selectedEntity;
         this.selectedCategory = data.selectedCategory;
         this.savePermissions();
       }
     });
-
   }
 
   getEntityByRole() {
@@ -137,7 +116,7 @@ export class AccountDimensionPermissionsComponent
   }
 
   getCategoryList() {
-      this.codingPermissionService
+    this.codingPermissionService
       .getCodingPermissionCategories()
       .pipe(takeUntil(this.destroySubject))
       .subscribe({
@@ -150,7 +129,7 @@ export class AccountDimensionPermissionsComponent
         error: (error) => this.onError(error),
     });
   }
- 
+
   getAssignedList() {
     this.codingPermissionService
       .getCodingPermissionAssigned(this.selectedEntity, this.categoryList.find(i => i.categoryID === this.selectedCategory)?.categoryName)
@@ -162,7 +141,7 @@ export class AccountDimensionPermissionsComponent
           }
         },
         error: (error) => this.onError(error),
-      });
+    });
   }
 
   savePermissions() {
@@ -171,7 +150,7 @@ export class AccountDimensionPermissionsComponent
       .subscribe({
         next: (response) => {
           console.log('Permissions saved successfully:', response);
-           this.getAssignedList();
+          this.getAssignedList();
         },
         error: (error) => {
           console.error('Error saving permissions:', error);
@@ -189,7 +168,6 @@ export class AccountDimensionPermissionsComponent
     this.getAssignedList();
   }
 
-
   private autoAssignEntity(): void {
     if (this.entityOptions.length !== 1) {
       return;
@@ -201,17 +179,17 @@ export class AccountDimensionPermissionsComponent
       ...row,
       entityProfileID: entityId
     }));
-
+ 
     this.f['selectedAccountDimensions'].setValue(updatedRows);
   }
 
   private onError(error: unknown): void {
     console.error(error);
-
+ 
     this.dataList$.next([]);
     this.totalRecord$.next(0);
   }
-
+  
   get f() {
     return this.formGroup.controls;
   }
@@ -219,6 +197,4 @@ export class AccountDimensionPermissionsComponent
   get selectedAccountDimensions(): AccountDimensionDetailDTO[] {
     return this.f['selectedAccountDimensions']?.value ?? [];
   }
-
 }
-
