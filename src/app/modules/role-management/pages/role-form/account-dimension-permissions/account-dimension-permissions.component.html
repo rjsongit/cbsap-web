@@ -36,9 +36,12 @@
           <p-select 
             [options]="entityList"
             [(ngModel)]="selectedEntity"
+            [showClear]="true"
             optionLabel="entityName" 
             optionValue="entityProfileID"
+            placeholder="Select an entity"
             appendTo="body"
+            (onClear)="onChangeEntity($event)"
             (onChange)="onChangeEntity($event)" />
         }
       </div>
@@ -55,9 +58,12 @@
           <p-select 
             [options]="categoryList" 
             [(ngModel)]="selectedCategory"
+            [showClear]="true"
             optionLabel="categoryName" 
             optionValue="categoryID"
+            placeholder="Select a category"
             appendTo="body"
+            (onClear)="onChangeCategory($event)"
             (onChange)="onChangeCategory($event)" />
         }
       </div>

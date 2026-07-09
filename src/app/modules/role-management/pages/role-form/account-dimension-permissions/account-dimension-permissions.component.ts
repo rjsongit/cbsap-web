@@ -42,8 +42,8 @@ export class AccountDimensionPermissionsComponent
   toBeAssignedList: CodingPermissionDTO[] = [];
   entityList: CodingPermissionEntityDTO[] = [];
   categoryList: CodingPermissionCategoryDTO[] = [];
-  selectedEntity: number = 0;
-  selectedCategory: number = 1;
+  selectedEntity: number | null = null;
+  selectedCategory: number | null = null;
 
   constructor(
     private dialogService: DialogService,
@@ -51,7 +51,10 @@ export class AccountDimensionPermissionsComponent
   ) {}
 
   ngOnInit(): void {
-    this.getCategoryList();
+    this.initialLoad();
+  }
+
+  initialLoad() {
     this.getEntityByRole();
   }
 
@@ -107,8 +110,10 @@ export class AccountDimensionPermissionsComponent
         next: (result) => {
           if (result.isSuccess) {
             this.entityList = result.responseData ?? [];
-            this.selectedEntity = this.entityList[0].entityProfileID;
-            this.getAssignedList();
+            this.selectedEntity = this.entityList.length !== null && this.entityList.length === 1 
+                ? this.entityList[0].entityProfileID
+                : null;
+            this.getCategoryList();
           }
         },
         error: (error) => this.onError(error),
@@ -123,7 +128,10 @@ export class AccountDimensionPermissionsComponent
         next: (result) => {
           if (result.isSuccess) {
             this.categoryList = result.responseData ?? [];
-            this.selectedCategory = this.categoryList[0].categoryID;
+            this.selectedCategory = this.categoryList.length !== null && this.categoryList.length === 1 
+                ? this.categoryList[0].categoryID
+                : null;
+            this.getAssignedList();
           }
         },
         error: (error) => this.onError(error),
@@ -132,7 +140,9 @@ export class AccountDimensionPermissionsComponent
 
   getAssignedList() {
     this.codingPermissionService
-      .getCodingPermissionAssigned(this.selectedEntity, this.categoryList.find(i => i.categoryID === this.selectedCategory)?.categoryName, this.roleId)
+      .getCodingPermissionAssigned(this.selectedEntity !== null ? this.selectedEntity : 0
+          , this.categoryList.find(i => i.categoryID === this.selectedCategory)?.categoryName
+          , this.roleId)
       .pipe(takeUntil(this.destroySubject))
       .subscribe({
         next: (result) => {
@@ -159,11 +169,13 @@ export class AccountDimensionPermissionsComponent
   }
 
   onChangeEntity(event: any) {
+    console.log('onChangeEntity', event.value);
     this.selectedEntity = event.value;
     this.getAssignedList();
   }
 
   onChangeCategory(event: any) {
+    console.log('onChangeCategory', event.value);
     this.selectedCategory = event.value;
     this.getAssignedList();
   }

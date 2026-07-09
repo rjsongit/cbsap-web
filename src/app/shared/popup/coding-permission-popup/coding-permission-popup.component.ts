@@ -29,8 +29,8 @@ export class CodingPermissionPopupComponent
   filterbyNameCode: string = '';
   entityList: CodingPermissionEntityDTO[] = [];
   categoryList: CodingPermissionCategoryDTO[] = [];
-  selectedEntity: number = 11;
-  selectedCategory: number = 1;
+  selectedEntity: number | null = null;
+  selectedCategory: number | null = null;
   permissionFiltered: CodingPermissionDTO[] = [];
   permissionList: CodingPermissionDTO[] = [];
   filterParam: CodingPermissionFilterDTO = {
@@ -55,7 +55,10 @@ export class CodingPermissionPopupComponent
   ngOnInit(): void {
     // access data passed from the parent
     this.receivedData = this.config.data.message;
-    this.selectedEntity = this.config.data.selectedEntity;
+    this.initialLoad();
+  }
+
+  initialLoad() {
     this.getEntityByRole();
   }
 
@@ -88,15 +91,16 @@ export class CodingPermissionPopupComponent
       .subscribe({
         next: (result) => {
           if (result.isSuccess) {
-            this.entityList = result.responseData ?? [];
-            this.getCategories();
+            this.entityList = result.responseData ?? [];            
+            this.selectedEntity = this.config.data.selectedEntity;
+            this.getCategoryList();
           }
         },
         error: (error) => this.onError(error),
     });
   }
 
-  getCategories() {
+  getCategoryList() {
     this.codingPermissionService
       .getCodingPermissionCategories()
       .pipe(takeUntil(this.destroySubject))
@@ -113,28 +117,34 @@ export class CodingPermissionPopupComponent
   }
 
   loadPermissionList() {
-    this.filterParam = {
-      entityProfileID: this.selectedEntity,
-      roleID: this.roleId,
-      category: this.categoryList.find(cat => cat.categoryID === this.selectedCategory)?.categoryName,
-      nameCode: this.filterbyNameCode.trim(),
-      isAssigned: this.filterbyAssigned,
-      isUnassigned: this.filterbyUnassigned
-    };
+    if (this.selectedEntity !== null && this.selectedCategory !== null) {
+      this.filterParam = {
+        entityProfileID: this.selectedEntity !== null ? this.selectedEntity : 0,
+        roleID: this.roleId,
+        category: this.selectedCategory !== null 
+          ? this.categoryList.find(cat => cat.categoryID === this.selectedCategory)?.categoryName 
+          : '',
+        nameCode: this.filterbyNameCode.trim(),
+        isAssigned: this.filterbyAssigned,
+        isUnassigned: this.filterbyUnassigned
+      };
 
-    this.codingPermissionService
-      .getCodingPermissionsByEntityCategoryAndNameCode(this.filterParam)
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe({
-        next: (result) => {
-          if (result.isSuccess) {
-            console.log('Fetched coding permissions:', result.responseData);
-            this.permissionList = result.responseData ?? [];
-            this.permissionFiltered = [...this.permissionList]; // Initialize filtered list with all permissions
-          }
-        },
-        error: (error) => this.onError(error),
-    });
+      this.codingPermissionService
+        .getCodingPermissionsByEntityCategoryAndNameCode(this.filterParam)
+        .pipe(takeUntil(this.destroySubject))
+        .subscribe({
+          next: (result) => {
+            if (result.isSuccess) {
+              console.log('Fetched coding permissions:', result.responseData);
+              this.permissionList = result.responseData ?? [];
+              this.permissionFiltered = [...this.permissionList]; // Initialize filtered list with all permissions
+            }
+          },
+          error: (error) => this.onError(error),
+      });
+    }
+    else
+      this.permissionFiltered = [];
   }
 
   searchFilter() {
