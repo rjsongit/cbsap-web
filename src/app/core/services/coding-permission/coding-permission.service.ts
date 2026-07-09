@@ -74,10 +74,10 @@ export class CodingPermissionService {
           );
       }
 
-  getCodingPermissionAssigned(entityProfileID: number, categoryName: string | undefined)
+  getCodingPermissionAssigned(entityProfileID: number, categoryName: string | undefined, roleID: number)
     : Observable<ResponseResult<CodingPermissionDTO[]>> {
         return this.resultHttpClient
-          .get<CodingPermissionDTO[]>(`${CODING_PERMISSION_ASSIGNED}/entity/${entityProfileID}/category/${categoryName}`, true)
+          .get<CodingPermissionDTO[]>(`${CODING_PERMISSION_ASSIGNED}/entity/${entityProfileID}/category/${categoryName}/role/${roleID}`, true)
           .pipe(
             map((response) => {
               return response;

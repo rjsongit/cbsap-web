@@ -132,7 +132,7 @@ export class AccountDimensionPermissionsComponent
 
   getAssignedList() {
     this.codingPermissionService
-      .getCodingPermissionAssigned(this.selectedEntity, this.categoryList.find(i => i.categoryID === this.selectedCategory)?.categoryName)
+      .getCodingPermissionAssigned(this.selectedEntity, this.categoryList.find(i => i.categoryID === this.selectedCategory)?.categoryName, this.roleId)
       .pipe(takeUntil(this.destroySubject))
       .subscribe({
         next: (result) => {

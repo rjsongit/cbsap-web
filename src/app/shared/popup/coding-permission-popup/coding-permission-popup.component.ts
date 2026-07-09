@@ -35,6 +35,7 @@ export class CodingPermissionPopupComponent
   permissionList: CodingPermissionDTO[] = [];
   filterParam: CodingPermissionFilterDTO = {
     entityProfileID: 0,
+    roleID: 0,
     category: undefined,
     nameCode: '',
     isAssigned: false,
@@ -78,7 +79,6 @@ export class CodingPermissionPopupComponent
       selectedEntity: this.selectedEntity,
       selectedCategory: this.selectedCategory
     });
-    // alert(this.filterbyNameCode)
   }
 
   getEntityByRole() {
@@ -115,6 +115,7 @@ export class CodingPermissionPopupComponent
   loadPermissionList() {
     this.filterParam = {
       entityProfileID: this.selectedEntity,
+      roleID: this.roleId,
       category: this.categoryList.find(cat => cat.categoryID === this.selectedCategory)?.categoryName,
       nameCode: this.filterbyNameCode.trim(),
       isAssigned: this.filterbyAssigned,
