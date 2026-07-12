@@ -3,3 +3,4 @@ export const CODING_PERMISSION_CATEGORIES = 'v1/codingpermission/categories';
 export const CODING_PERMISSION_ENTITIES = 'v1/codingpermission/entities';
 export const CODING_PERMISSION_ASSIGN = 'v1/codingpermission/assign';
 export const CODING_PERMISSION_ASSIGNED = 'v1/codingpermission/assigned';
+export const CODING_PERMISSION_ASSIGNED_PAGED = 'v1/codingpermission/assigned/paged?';

@@ -8,6 +8,7 @@ export * from './dtos/CodingPermissionEntityDTO';
 export * from './dtos/CodingPermissionAssignedDTO';
 export * from './dtos/CodingPermissionPopupData';
 export * from './dtos/CodingPermissionFilterDTO';
+export * from './dtos/CodingPermissionSearchQueryDTO';
 
 // queries
 export * from './queries/pagination-account-dimension-query';

@@ -4,7 +4,8 @@ import { AccountDimensionDetailDTO
   , CodingPermissionCategoryDTO
   , CodingPermissionDTO
   , CodingPermissionEntityDTO
-  , CodingPermissionPopupData } from '@core/model/account-dimension-permission';
+  , CodingPermissionPopupData
+  , CodingPermissionSearchQueryDTO} from '@core/model/account-dimension-permission';
 import { DropdownOptionDto } from '@core/model/roles-management';
 import { CodingPermissionService } from '@core/services/coding-permission/coding-permission.service';
 import { PrimeImportsModule } from '@shared/moduleResources/prime-imports';
@@ -36,7 +37,7 @@ export class AccountDimensionPermissionsComponent
   private dataList$ = new BehaviorSubject<AccountDimensionDetailDTO[]>([]); 
   private totalRecord$ = new BehaviorSubject<number>(0);
  
-  totalRecords = 0; 
+  totalRecords = 0;
   accountDimensionPagination: AccountDimensionDetailDTO[] = [];
   assignedList: CodingPermissionDTO[] = [];
   toBeAssignedList: CodingPermissionDTO[] = [];
@@ -44,6 +45,13 @@ export class AccountDimensionPermissionsComponent
   categoryList: CodingPermissionCategoryDTO[] = [];
   selectedEntity: number | null = null;
   selectedCategory: number | null = null;
+  codingPermissionSearch: CodingPermissionSearchQueryDTO = {
+    roleID: this.roleId,
+    entityProfileID: 0,
+    category: undefined,
+    PageNumber: 0,
+    PageSize: 0
+  };
 
   constructor(
     private dialogService: DialogService,
@@ -133,7 +141,8 @@ export class AccountDimensionPermissionsComponent
             this.selectedCategory = this.categoryList.length !== null && this.categoryList.length === 1 
                 ? this.categoryList[0].categoryID
                 : null;
-            this.getAssignedList();
+            // this.getAssignedList();
+            this.getAssignedListPaged();
           }
         },
         error: (error) => this.onError(error),
@@ -156,13 +165,33 @@ export class AccountDimensionPermissionsComponent
     });
   }
 
+  getAssignedListPaged() {
+    this.codingPermissionSearch.roleID = this.roleId;
+    this.codingPermissionSearch.entityProfileID = this.selectedEntity !== null ? this.selectedEntity : 0;
+    this.codingPermissionSearch.category = this.categoryList.find(i => i.categoryID === this.selectedCategory)?.categoryName;   
+
+    this.codingPermissionService
+      .getCodingPermissionAssignedPaged(this.codingPermissionSearch)
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe({
+        next: (result) => {
+          if (result.isSuccess) {
+            this.assignedList = result.responseData?.data ?? [];
+            this.totalRecords = result.responseData?.totalCount ?? 0;
+          }
+        },
+        error: (error) => this.onError(error),
+      });
+  }
+
   savePermissions() {
     this.codingPermissionService
       .saveCodingPermission(this.toBeAssignedList)
       .subscribe({
         next: (response) => {
           console.log('Permissions saved successfully:', response);
-          this.getAssignedList();
+          // this.getAssignedList();
+          this.getAssignedListPaged();
         },
         error: (error) => {
           console.error('Error saving permissions:', error);
@@ -171,15 +200,15 @@ export class AccountDimensionPermissionsComponent
   }
 
   onChangeEntity(event: any) {
-    console.log('onChangeEntity', event.value);
     this.selectedEntity = event.value;
-    this.getAssignedList();
+    // this.getAssignedList();
+    this.getAssignedListPaged();
   }
 
   onChangeCategory(event: any) {
-    console.log('onChangeCategory', event.value);
     this.selectedCategory = event.value;
-    this.getAssignedList();
+    // this.getAssignedList();
+    this.getAssignedListPaged();
   }
 
   private autoAssignEntity(): void {

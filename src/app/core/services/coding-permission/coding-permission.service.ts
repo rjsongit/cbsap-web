@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpService } from '../common/http.service';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ResponseResult } from '@core/model/common';
-import { CodingPermissionCategoryDTO, CodingPermissionDTO, CodingPermissionEntityDTO, CodingPermissionFilterDTO } from '@core/model/account-dimension-permission';
-import { CODING_PERMISSION, CODING_PERMISSION_ASSIGN, CODING_PERMISSION_ASSIGNED, CODING_PERMISSION_CATEGORIES, CODING_PERMISSION_ENTITIES, HttpErrorResponse } from '@core/constants';
+import { Pagination, ResponseResult } from '@core/model/common';
+import { CodingPermissionCategoryDTO, CodingPermissionDTO, CodingPermissionEntityDTO, CodingPermissionFilterDTO, CodingPermissionSearchQueryDTO } from '@core/model/account-dimension-permission';
+import { CODING_PERMISSION, CODING_PERMISSION_ASSIGN, CODING_PERMISSION_ASSIGNED, CODING_PERMISSION_ASSIGNED_PAGED, CODING_PERMISSION_CATEGORIES, CODING_PERMISSION_ENTITIES, HttpErrorResponse } from '@core/constants';
 import { ResultsHttpService } from '../common/results-http.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -92,6 +92,20 @@ export class CodingPermissionService {
     : Observable<ResponseResult<CodingPermissionDTO[]>> {
         return this.resultHttpClient
           .post<CodingPermissionDTO[]>(`${CODING_PERMISSION}/filter`, codingPermissionFilterDTO, true)
+          .pipe(
+            map((response) => {
+              return response;
+            }),
+            catchError((error: HttpErrorResponse) => {
+              return throwError(() => error);
+            })
+          );
+      }
+
+  getCodingPermissionAssignedPaged(query: CodingPermissionSearchQueryDTO) 
+    : Observable<ResponseResult<Pagination<CodingPermissionDTO>>> {
+        return this.resultHttpClient
+          .getSearchWithPagination<CodingPermissionDTO>(`${CODING_PERMISSION_ASSIGNED_PAGED}${this.resultHttpClient.serialiazeQueryString(query)}`, true)
           .pipe(
             map((response) => {
               return response;
