@@ -158,9 +158,7 @@ export class CodingPermissionPopupComponent
   }
   
   setAllSelectionStates(stateValue: boolean) {
-    // handles 'Select All' and 'Unselect All' utility actions inside the filtered window space
-    this.permissionList.forEach(item => item.checked = stateValue);
-    this.filterList(); 
+    this.permissionFiltered.forEach(item => item.checked = stateValue);
   }
 
   filterList() {
