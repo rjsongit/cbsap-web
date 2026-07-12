@@ -113,7 +113,9 @@ export class AccountDimensionPermissionsComponent
             this.selectedEntity = this.entityList.length !== null && this.entityList.length === 1 
                 ? this.entityList[0].entityProfileID
                 : null;
-            this.getCategoryList();
+
+            if (this.entityList.length > 0)
+              this.getCategoryList();
           }
         },
         error: (error) => this.onError(error),

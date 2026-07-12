@@ -93,7 +93,9 @@ export class CodingPermissionPopupComponent
           if (result.isSuccess) {
             this.entityList = result.responseData ?? [];            
             this.selectedEntity = this.config.data.selectedEntity;
-            this.getCategoryList();
+
+            if (this.entityList.length > 0)
+              this.getCategoryList();
           }
         },
         error: (error) => this.onError(error),
