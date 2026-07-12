@@ -25,18 +25,68 @@ $column-widths: 250px 200px 1fr; // Fixes 'Action' column width, lets 'Name' fil
   .table-row {
     color: #334155; // Dark text color for the row data
     font-size: 0.95rem;
-    
-    // .col-action {
-    //   display: flex;
-    //   align-items: center;
-      
-    //   i {
-    //     font-size: 1.2rem; // Slightly scales up the trash icon size
-        
-    //     &:hover {
-    //       opacity: 0.8;
-    //     }
-    //   }
-    // }
+
+    .col-assigned {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-height: calc(100vh - 750px);
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      .assigned-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .paginator-wrapper {
+        padding-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 0.5rem;
+        flex-wrap: wrap;
+      }
+    }
   }
+}
+
+/* Override PrimeNG paginator buttons to show border line and boxed look */
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-pages .p-paginator-page,
+.p-paginator .p-paginator-rpp .p-dropdown .p-dropdown-label {
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background: #ffffff;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page {
+  min-width: 2.5rem;
+  margin: 0 0.25rem;
+}
+
+.p-paginator .p-paginator-page.p-highlight,
+.p-paginator .p-paginator-prev.p-highlight,
+.p-paginator .p-paginator-next.p-highlight {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next {
+  padding: 0.5rem 0.75rem;
+}
+
+.p-paginator .p-paginator-current {
+  margin-right: auto;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.p-paginator .p-paginator-rpp {
+  margin-left: auto;
 }

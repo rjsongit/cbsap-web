@@ -70,19 +70,34 @@
 
       <div class="col-assigned">
         @if (assignedList.length > 0) {
-          @for (item of assignedList; track item.id) {
-            <div class="col-12 md:col-6 lg:col-4">
-              <div class="flex align-items-center p-3 surface-card border-round shadow-1">
-                <!-- <i class="pi pi-user text-2xl mr-3 text-blue-500"></i> -->
-                <div>
-                  <div class="text-900">{{ item.nameCode }}</div>
-                  <!-- <div class="text-600 text-sm">Software Engineer</div> -->
+          <div class="assigned-grid">
+            @for (item of assignedList; track item.id) {
+              <div class="col-12 md:col-6 lg:col-4">
+                <div class="flex align-items-center p-3 surface-card border-round shadow-1">
+                  <div>
+                    <div class="text-900">{{ item.nameCode }}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          }
+            }
+          </div>
         }
       </div>
+    </div>
+  </div>
+
+  <div class="paginator-wrapper">
+    <div class="flex items-center flex-row-reverse">
+      <p-paginator
+        [rows]="codingPermissionSearch.PageSize"
+        [rowsPerPageOptions]="pageSizeOptions"
+        [totalRecords]="totalRecords"
+        [first]="(codingPermissionSearch.PageNumber - 1) * codingPermissionSearch.PageSize"
+        (onPageChange)="onAssignedPageChange($event)"
+        [showFirstLastIcon]="true"
+        appendTo="body">
+      </p-paginator>
+      <span class="p-paginator-current">Showing {{ assignedStart }} to {{ assignedEnd }} of {{ totalRecords }} entries</span>
     </div>
   </div>
 </div>

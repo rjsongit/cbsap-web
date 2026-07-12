@@ -14,13 +14,14 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
+import { PaginatorModule } from 'primeng/paginator';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-account-dimension-permissions',
   standalone: true,
   providers: [DialogService],
-  imports: [FormsModule, ReactiveFormsModule, PrimeImportsModule, DropdownModule, TableModule, SelectModule],
+  imports: [FormsModule, ReactiveFormsModule, PrimeImportsModule, DropdownModule, TableModule, SelectModule, PaginatorModule],
   templateUrl: './account-dimension-permissions.component.html',
   styleUrl: './account-dimension-permissions.component.scss'
 })
@@ -45,12 +46,14 @@ export class AccountDimensionPermissionsComponent
   categoryList: CodingPermissionCategoryDTO[] = [];
   selectedEntity: number | null = null;
   selectedCategory: number | null = null;
+  pageSizeOptions = [5, 10, 20];
+
   codingPermissionSearch: CodingPermissionSearchQueryDTO = {
     roleID: this.roleId,
     entityProfileID: 0,
     category: undefined,
-    PageNumber: 0,
-    PageSize: 0
+    PageNumber: 1,
+    PageSize: 10
   };
 
   constructor(
@@ -191,6 +194,7 @@ export class AccountDimensionPermissionsComponent
         next: (response) => {
           console.log('Permissions saved successfully:', response);
           // this.getAssignedList();
+          this.codingPermissionSearch.PageNumber = 1;
           this.getAssignedListPaged();
         },
         error: (error) => {
@@ -201,14 +205,33 @@ export class AccountDimensionPermissionsComponent
 
   onChangeEntity(event: any) {
     this.selectedEntity = event.value;
-    // this.getAssignedList();
+    this.codingPermissionSearch.PageNumber = 1;
     this.getAssignedListPaged();
   }
 
   onChangeCategory(event: any) {
     this.selectedCategory = event.value;
-    // this.getAssignedList();
+    this.codingPermissionSearch.PageNumber = 1;
     this.getAssignedListPaged();
+  }
+
+  onAssignedPageChange(event: any) {
+    this.codingPermissionSearch.PageNumber = event.page + 1;
+    this.codingPermissionSearch.PageSize = event.rows;
+    this.getAssignedListPaged();
+  }
+
+  get assignedStart(): number {
+    return this.totalRecords === 0
+      ? 0
+      : (this.codingPermissionSearch.PageNumber - 1) * this.codingPermissionSearch.PageSize + 1;
+  }
+
+  get assignedEnd(): number {
+    return Math.min(
+      this.codingPermissionSearch.PageNumber * this.codingPermissionSearch.PageSize,
+      this.totalRecords
+    );
   }
 
   private autoAssignEntity(): void {
